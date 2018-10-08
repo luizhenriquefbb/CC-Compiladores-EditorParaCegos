@@ -1,15 +1,18 @@
 import { Lexico } from "./scripts/lexico.js";
-// import { Sintatico } from "./scripts/sintatico.js";
-// var Lexico = require('./scripts/lexico');
+import { Sintatico } from "./scripts/sintatico.js";
+
+console.log("index.js");
 
 function runLexico() {
     console.log("iniciando teste");
     var lexico = new Lexico();
-    // var tokens = lexico.analyze("meu gato pos um ovo");
-    var tokens = lexico.analyze(document.getElementById('inputArea').value);
+    var tokens = lexico.analyze(String(document.getElementById('inputArea').value).toLowerCase());
+    
+    // var sintatico = new Sintatico(tokens);
+    
+    // sintatico.comecarAnalise();
 
     console.log(tokens);
 }
 
-var button = document.getElementById("buttonReproduce");
-button.onclick = runLexico;
+document.getElementById("buttonReproduce").onclick = runLexico;
