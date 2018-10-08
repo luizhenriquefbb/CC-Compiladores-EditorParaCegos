@@ -28,7 +28,14 @@ export class Lexico {
       * @param {String} str token
       */
     classify(str){
-        return this.dicionario.queryWord(str);
+        var classifications = [];
+        var result = this.dicionario.queryWord(str); 
+        Object.keys(result.meaning).map(
+            x => {
+                classifications.push(x);
+            }
+        )
+        return classifications;
     }
 
     /**
@@ -100,7 +107,7 @@ export class Lexico {
     }
 
     teste(str){
-        console.log(str);
+        // console.log(str);
     }
 }
 

@@ -33,14 +33,30 @@ export class Dicionario {
     }
 
     /**
-     * lê de um objeto
-     * @param {String} word token
+     * consulta uma palavra na API
+     * @param {String} palavra token
      */
-    queryWord(word) {
-        if (this.csv == null) {
-            this.csv = dicionario;
-        }
-        return this.csv[word];
+    queryWord(palavra) {
+        console.log("Iniciando teste de api");
+        var retorno = null;
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            timeout: 60000, // sets timeout to 60 seconds
+            url: `https://googledictionaryapi.eu-gb.mybluemix.net/?define=${palavra}&lang=en`,
+            success: function (dataS) {
+                // console.log(dataS);
+                retorno = dataS;
+                
+            },
+            error: function (error) {
+
+                console.log(JSON.stringify(error));
+                // alert("TIME OUT - there is a network issue. Please try again later");
+            },
+            async: false,
+        });
+        return retorno;
 
     }
 
@@ -75,10 +91,10 @@ export class Dicionario {
     //     }
     // }
 
-     /**
-     * Le de um arquivo csv o dicionário e coloca em um objeto do tipo chave valor, onde a chave é a palavra
-     * em LOWERCASE e o valor é a classificação
-     */
+    /**
+    * Le de um arquivo csv o dicionário e coloca em um objeto do tipo chave valor, onde a chave é a palavra
+    * em LOWERCASE e o valor é a classificação
+    */
     readTextFile(file) {
         var rawFile = new XMLHttpRequest();
         rawFile.open("GET", file, false);
@@ -86,18 +102,18 @@ export class Dicionario {
             if (rawFile.readyState === 4) {
                 if (rawFile.status === 200 || rawFile.status == 0) {
                     var allText = rawFile.responseText;
-                    
+
                     var allTextLines = allText.split(/\r\n|\n/);
                     var entries = [];
                     var result = {};
-        
-        
+
+
                     for (const line of allTextLines) {
                         entries = line.split('\t');
                         // TODO: colocar a chave em lowercase
                         result[entries[0]] = entries[1];
                     }
-        
+
                     this.csv = result;
                 }
             }
