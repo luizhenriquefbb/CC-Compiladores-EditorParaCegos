@@ -20,8 +20,8 @@ npm start
 Aluno | Matrícula
 -----| ----
 Luiz Henrique | 11514334
-Aline Moura | --
-Alisson Galiza | ---
+Aline Moura | 
+Alisson Galiza | 11408126
 
 
 # Sobre o projeto:
@@ -30,15 +30,38 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
 ## Gramática
 
+1 | 2
+------ | --
+S | NP VP
+VP | V
+VP | V NP
+NP | N
+NP | Det N
 
-    <sentence>      -->   <noun phrase> <verb phrase>
-    <noun phrase>   -->   <adjective> <noun phrase> 
-                        | <adjective> <singular noun>
-    <verb phrase>   -->   <singular verb> <adverb>
-    <adjective>     -->   a | the |little
-    <singular noun> -->   boy
-    <singular verb> -->   ran
-    <adverb>        -->   quickly
+
+onde
+
+
+    S == [Sentence]
+        ex: John likes Sarah’s black hair
+
+    N == [Noun]
+        ex: John, hair
+
+    V == [Verb]
+        ex: eating, sat
+
+    Adj == [Adjective]
+        ex: black, long
+
+    Det == [Determiner]
+        ex: the, a, every
+
+    NP == [Noun Phrase]
+        ex: Sarah’s long black hair
+
+    VP == [Verb Phrase]
+        ex: eating apples
 
 ## Gramática
 

@@ -1,4 +1,5 @@
 export class Sintatico {
+
     constructor(list_tokens) {
         this.list_tokens = list_tokens;  //lista de tokens
         this.current = null;    //token atual
@@ -7,7 +8,6 @@ export class Sintatico {
         this.cont_begin_end = 0;     //contador de begin e end
         this.pilha_tipos = TypesStack();     //pilha de tipos
     }
-
 
     /**
      * Retornar o próximo token da lista
@@ -48,7 +48,6 @@ export class Sintatico {
             die("O símbolo '" + token.word + "' na linha " + str(token.line) + " não foi declarado")
         }
     }
-
 
     /**
      * Verifica se um idenficador está sendo usado ou declarado
@@ -108,6 +107,57 @@ export class Sintatico {
     }
 
     comecarAnalise() {
+        if (!sentence())
+            console.log('Sentença inválida');
+    }
 
+    sentence(){
+        if(!nounPhrase())
+            return false;
+        if(!verbPhrase())
+            return false;
+        return true;
+    }
+
+    verbPhrase(){
+        if(!verb())
+            return false;
+        if(!nounPhrase());
+        return true;
+    }
+
+    nounPhrase(){
+        if(!noun()){
+            if(!determinant())
+                return false;
+            
+            if(!noun())
+                return false;
+            return true;
+        }
+    }
+
+    noun(){
+        if (current.lex().indexOf(dicionario.SUBSTANTIVO) > -1) {
+            this.next();
+            return true;
+        }
+        return false;
+    }
+
+    verb(){
+        if (current.lex().indexOf(dicionario.VERBO) > -1) {
+            this.next();
+            return true;
+        }
+        return false;
+    }
+
+    determinant(){
+        if (current.lex().indexOf(dicionario.DETERMINANTE) > -1)  {
+            this.next();
+            return true;
+        }
+        return false;
     }
 }

@@ -1,4 +1,5 @@
 import { Lexico } from "./scripts/lexico.js";
+import { Sintatico } from "./scripts/sintatico.js";
 // import { Sintatico } from "./scripts/sintatico.js";
 // var Lexico = require('./scripts/lexico');
 
@@ -7,6 +8,10 @@ function runLexico() {
     var lexico = new Lexico();
     // var tokens = lexico.analyze("meu gato pos um ovo");
     var tokens = lexico.analyze(document.getElementById('inputArea').value);
+
+    var sintatico = new Sintatico(tokens);
+
+    sintatico.comecarAnalise();
 
     console.log(tokens);
 }
