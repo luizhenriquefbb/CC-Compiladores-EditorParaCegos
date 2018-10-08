@@ -1,6 +1,6 @@
 
 // import { execSQLQuery } from "../database/execSQLQuery.js";
-import { dicionario } from "../database/dicionario.js";
+// import { dicionario } from "../database/dicionario.js";
 
 export class Dicionario {
     constructor() {

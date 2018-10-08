@@ -9,16 +9,16 @@ dicionario = {}
 for line in lines:
     chave_valor = line.split(' : ')
     try: 
-        if not dicionario[chave_valor[0]]:
-            dicionario[chave_valor[0]] = [chave_valor[1]]
+        if not dicionario[str(chave_valor[0]).lower()]:
+            dicionario[str(chave_valor[0]).lower()] = [str(chave_valor[1])]
         else:
-             dicionario[chave_valor[0]].append(chave_valor[1])
+             dicionario[str(chave_valor[0]).lower()].append(str(chave_valor[1]))
     except IndexError:
         print chave_valor
         import pdb; pdb.set_trace()
 
     except KeyError:
-        dicionario[chave_valor[0]] = [chave_valor[1]]
+        dicionario[str(chave_valor[0]).lower()] = [str(chave_valor[1])]
 
     
 fileS = open('a.txt', 'w')

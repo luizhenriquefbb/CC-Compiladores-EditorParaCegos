@@ -30,37 +30,18 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
 ## Gramática
 
-1 | 2
------- | --
-S | NP VP
-VP | V NP
-VP | V
-NP | N
-NP | Det N
 
+    <sentence>      -->   <noun phrase> <verb phrase>
+    <noun phrase>   -->   <adjective> <noun phrase> 
+                        | <adjective> <singular noun>
+    <verb phrase>   -->   <singular verb> <adverb>
+    <adjective>     -->   a | the |little
+    <singular noun> -->   boy
+    <singular verb> -->   ran
+    <adverb>        -->   quickly
 
-onde
+## Gramática
 
+[Explicações sobre a gramática utilizada](https://web.stanford.edu/~jurafsky/slp3/11.pdf)
 
-    S == [Sentence]
-        ex: John likes Sarah’s black hair
-
-    N == [Noun]
-        ex: John, hair
-
-    V == [Verb]
-        ex: eating, sat
-
-    Adj == [Adjective]
-        ex: black, long
-
-    Det == [Determiner]
-        ex: the, a, every
-
-    NP == [Noun Phrase]
-        ex: Sarah’s long black hair
-
-    VP == [Verb Phrase]
-        ex: eating apples
-
-
+![](gramatica.png)
