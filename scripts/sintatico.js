@@ -1,12 +1,16 @@
+// import { TypesStack } from "./typeStack.js";
+// import { SymbolsTable } from "./symbolsTable.js";
+
+
 export class Sintatico {
 
     constructor(list_tokens) {
         this.list_tokens = list_tokens;  //lista de tokens
         this.current = null;    //token atual
         this.index = 0;      //índice do token atual
-        this.tabela = SymbolsTable();    //tabela de símbolos
+        // this.tabela = SymbolsTable();    //tabela de símbolos
         this.cont_begin_end = 0;     //contador de begin e end
-        this.pilha_tipos = TypesStack();     //pilha de tipos
+        // this.pilha_tipos = TypesStack();     //pilha de tipos
     }
 
     /**
@@ -109,6 +113,11 @@ export class Sintatico {
     comecarAnalise() {
         if (!sentence())
             console.log('Sentença inválida');
+
+        else{
+            console.log("Sucesso");
+            
+        }
     }
 
     sentence(){
