@@ -1,9 +1,6 @@
-import Dicionario  from "./dicionario.js";
+import * as dicionario from './dicionario.js'
+import Dicionario from './dicionario.js'
 import { Token } from "./token.js";
-
-const VERB = "verb";
-const NOUN = "noun";
-const PAST = "past";
 
 export class Lexico {
     constructor() {
@@ -40,11 +37,11 @@ export class Lexico {
             Object.keys(result.meaning).map(
                 x => {
                     // se a palavra retornada for verbo, o tempo default é 'present'
-                    if (x == VERB)
-                        classifications.push({ "classificacao": x, "tempoVerbal": "present" });
+                    if (x == dicionario.VERB)
+                        classifications.push({ "classificacao": x, "tempoVerbal": dicionario.PRESENT });
 
                     // se a palvra retornada for substantivo, por fdefault, ela está em 'singular'
-                    else if (x == NOUN)
+                    else if (x == dicionario.NOUN)
                         classifications.push({ "classificacao": x, "isPlural": false });
 
                     // quando a palavra sofre uma alteração (mudança de tempo, ou plural) e a classificação vem como
@@ -52,7 +49,10 @@ export class Lexico {
                     else if (x == "") {
                         var definition = result.meaning[x][0].definition;
                         if (definition.includes("past")) {
-                            classifications.push({ "classificacao": VERB, "tempoVerbal": PAST });
+                            classifications.push({ "classificacao": dicionario.VERB, "tempoVerbal": dicionario.PAST });
+                        }
+                        else if(definition.includes("present")) {
+                            classifications.push({ "classificacao": dicionario.VERB, "tempoVerbal": dicionario.PRESENT });
                         }
                     }
 
@@ -72,12 +72,12 @@ export class Lexico {
                     // palavras no irregular e regular, respectivamente
                     if (definition.includes("plural form of") || str.endsWith("s")) {
                         // apenas substantivos têm plural
-                        classifications.push({ "classificacao": NOUN, "isPlural": true });
+                        classifications.push({ "classificacao": dicionario.NOUN, "isPlural": true });
                     }
 
                     else if (definition.includes("past")) {
                         // apenas verbo podem estar no passado
-                        classifications.push({ "classificacao": VERB, "tempoVerbal": PAST });
+                        classifications.push({ "classificacao": dicionario.VERB, "tempoVerbal": dicionario.PAST });
                     }
                 }
             )

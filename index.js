@@ -6,10 +6,6 @@ function runLexico() {
     console.log("iniciando teste");
     var lexico = new Lexico();
     var tokens = lexico.analyze(String(document.getElementById('inputArea').value).toLowerCase());
-    
-    // var sintatico = new Sintatico(tokens);
-    
-    // sintatico.comecarAnalise();
 
     var sintatico = new Sintatico(tokens);
 

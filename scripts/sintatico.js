@@ -1,7 +1,3 @@
-// import { TypesStack } from "./typeStack.js";
-// import { SymbolsTable } from "./symbolsTable.js";
-import { SUBSTANTIVO } from './dicionario.js';
-import Dicionario from './dicionario.js'
 import * as dicionario from './dicionario.js'
 
 console.log('olha aqui', dicionario.SUBSTANTIVO);
@@ -10,7 +6,7 @@ export class Sintatico {
 
     constructor(list_tokens) {
         console.log("Iniciando Sintatico");
-        
+
         this.list_tokens = list_tokens;  //lista de tokens
         this.index = 0;      //índice do token atual
         this.current = this.list_tokens[this.index];    //token atual
@@ -126,53 +122,53 @@ export class Sintatico {
         }
     }
 
-    sentence() {
-        if (!this.nounPhrase())
-            return false;
-        if (!this.verbPhrase())
-            return false;
-        return true;
-    }
+    // sentence() {
+    //     if (!this.nounPhrase())
+    //         return false;
+    //     if (!this.verbPhrase())
+    //         return false;
+    //     return true;
+    // }
 
-    verbPhrase() {
-        if (!this.verb())
-            return false;
-        if (!this.nounPhrase());
-        return true;
-    }
+    // verbPhrase() {
+    //     if (!this.verb())
+    //         return false;
+    //     if (!this.nounPhrase());
+    //     return true;
+    // }
 
-    nounPhrase() {
-        if (!this.noun()) {
-            if (!this.determinant())
-                return false;
+    // nounPhrase() {
+    //     if (!this.noun()) {
+    //         if (!this.determinant())
+    //             return false;
 
-            if (!this.noun())
-                return false;
-            return true;
-        }
-    }
+    //         if (!this.noun())
+    //             return false;
+    //         return true;
+    //     }
+    // }
 
-    noun() {
-        if (this.current.lex.indexOf(dicionario.SUBSTANTIVO) > -1) {
-            this.next();
-            return true;
-        }
-        return false;
-    }
+    // noun() {
+    //     if (this.current.lex.indexOf(dicionario.SUBSTANTIVO) > -1) {
+    //         this.next();
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    verb() {
-        if (this.current.lex.indexOf(dicionario.VERBO) > -1) {
-            this.next();
-            return true;
-        }
-        return false;
-    }
+    // verb() {
+    //     if (this.current.lex.indexOf(dicionario.VERBO) > -1) {
+    //         this.next();
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    determinant() {
-        if (this.current.lex.indexOf(dicionario.DETERMINANTE) > -1) {
-            this.next();
-            return true;
-        }
-        return false;
-    }
+    // determinant() {
+    //     if (this.current.lex.indexOf(dicionario.DETERMINANTE) > -1) {
+    //         this.next();
+    //         return true;
+    //     }
+    //     return false;
+    // }
 }
