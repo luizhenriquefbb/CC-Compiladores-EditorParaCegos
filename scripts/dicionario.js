@@ -1,9 +1,12 @@
 
-export class Dicionario {
+// import { execSQLQuery } from "../database/execSQLQuery.js";
+// import { dicionario } from "../database/dicionario.js";
+export const SUBSTANTIVO = "noun"
+export const VERBO = "verb"
+export const DETERMINANTE = "determiner"
+
+export default class Dicionario {
     constructor() {
-        console.log("Iniciando Dicionario");
-        
-        this.csv = null; // usado quando a busca por uma palavra é feita por um arquivo
     }
 
     /**
@@ -33,6 +36,5 @@ export class Dicionario {
         return retorno;
 
     }
-
 
 }

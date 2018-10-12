@@ -1,4 +1,4 @@
-import { Dicionario } from "./dicionario.js";
+import Dicionario  from "./dicionario.js";
 import { Token } from "./token.js";
 
 const VERB = "verb";

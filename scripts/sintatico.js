@@ -1,6 +1,10 @@
 // import { TypesStack } from "./typeStack.js";
 // import { SymbolsTable } from "./symbolsTable.js";
+import { SUBSTANTIVO } from './dicionario.js';
+import Dicionario from './dicionario.js'
+import * as dicionario from './dicionario.js'
 
+console.log('olha aqui', dicionario.SUBSTANTIVO);
 
 export class Sintatico {
 
@@ -8,8 +12,8 @@ export class Sintatico {
         console.log("Iniciando Sintatico");
         
         this.list_tokens = list_tokens;  //lista de tokens
-        this.current = null;    //token atual
         this.index = 0;      //índice do token atual
+        this.current = this.list_tokens[this.index];    //token atual
         // this.tabela = SymbolsTable();    //tabela de símbolos
         this.cont_begin_end = 0;     //contador de begin e end
         // this.pilha_tipos = TypesStack();     //pilha de tipos
@@ -19,10 +23,10 @@ export class Sintatico {
      * Retornar o próximo token da lista
      */
     next() {
-        if (this.index < len(this.list_tokens)) { // verifica se o próximo índice pertence ao array
+        if (this.index < this.list_tokens.length - 1) { // verifica se o próximo índice pertence ao array
+            this.index += 1;
             this.current = this.list_tokens[this.index]; // pega o token atual
             // print (this.current)
-            this.index += 1;
             return this.current;
         }
 
@@ -113,59 +117,59 @@ export class Sintatico {
     }
 
     comecarAnalise() {
-        if (!sentence())
+        if (!this.sentence())
             console.log('Sentença inválida');
 
-        else{
+        else {
             console.log("Sucesso");
-            
+
         }
     }
 
-    sentence(){
-        if(!nounPhrase())
+    sentence() {
+        if (!this.nounPhrase())
             return false;
-        if(!verbPhrase())
+        if (!this.verbPhrase())
             return false;
         return true;
     }
 
-    verbPhrase(){
-        if(!verb())
+    verbPhrase() {
+        if (!this.verb())
             return false;
-        if(!nounPhrase());
+        if (!this.nounPhrase());
         return true;
     }
 
-    nounPhrase(){
-        if(!noun()){
-            if(!determinant())
+    nounPhrase() {
+        if (!this.noun()) {
+            if (!this.determinant())
                 return false;
-            
-            if(!noun())
+
+            if (!this.noun())
                 return false;
             return true;
         }
     }
 
-    noun(){
-        if (current.lex().indexOf(dicionario.SUBSTANTIVO) > -1) {
+    noun() {
+        if (this.current.lex.indexOf(dicionario.SUBSTANTIVO) > -1) {
             this.next();
             return true;
         }
         return false;
     }
 
-    verb(){
-        if (current.lex().indexOf(dicionario.VERBO) > -1) {
+    verb() {
+        if (this.current.lex.indexOf(dicionario.VERBO) > -1) {
             this.next();
             return true;
         }
         return false;
     }
 
-    determinant(){
-        if (current.lex().indexOf(dicionario.DETERMINANTE) > -1)  {
+    determinant() {
+        if (this.current.lex.indexOf(dicionario.DETERMINANTE) > -1) {
             this.next();
             return true;
         }
