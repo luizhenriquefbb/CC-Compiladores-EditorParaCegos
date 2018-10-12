@@ -1,28 +1,38 @@
+import { utils } from "./utils.js";
+import { Dicionario } from "./dicionario.js";
 export class Sintatico {
 
     constructor(list_tokens) {
         console.log("Iniciando Sintatico");
-        
+
         this.list_tokens = list_tokens;  //lista de tokens
-        this.current = null;    //token atual
         this.index = 0;      //índice do token atual
-        // this.tabela = SymbolsTable();    //tabela de símbolos
+        this.current = this.list_tokens[0];    //token atual
+        
         this.cont_begin_end = 0;     //contador de begin e end
-        // this.pilha_tipos = TypesStack();     //pilha de tipos
+        
+
+        this.utils = utils;
+        this.dicionario = new Dicionario();
+
+
+        // Guarda o ultimo erro gerado para exibir ao usuário
+        this.lastError = ''; 
     }
 
     /**
      * Retornar o próximo token da lista
      */
     next() {
-        if (this.index < len(this.list_tokens)) { // verifica se o próximo índice pertence ao array
+        if (this.index < (this.list_tokens).length) { // verifica se o próximo índice pertence ao array
             this.current = this.list_tokens[this.index]; // pega o token atual
             // print (this.current)
             this.index += 1;
             return this.current;
         }
 
-        sys.exit("Erro: O programa terminou, mas a análise não")    // caso chegue ao fim da lista sem terminar o programa
+        this.lastError = "Erro: O programa terminou, mas a análise não";
+        throw ("Erro: O programa terminou, mas a análise não");    // caso chegue ao fim da lista sem terminar o programa
         return null;
     }
 
@@ -33,133 +43,244 @@ export class Sintatico {
         this.index -= 1;
     }
 
-    /**
-     * Coloca um novo identificador na tabela de identificadores.
-     */
-    push_id(token, type) {
-        this.tabela.push_simbolo(token.word, type);
-    }
 
 
-    /**
-     * Verifica se um identificador está na tabela de identificadores.
-     */
-    has_id(token) {
-        // TODO: colocar na sintaxe de js
-        if (!this.tabela.simbolo_na_tabela(token.word)) {
-            die("O símbolo '" + token.word + "' na linha " + str(token.line) + " não foi declarado")
-        }
-    }
+    // Analise
 
-    /**
-     * Verifica se um idenficador está sendo usado ou declarado
-     */
-    verificar_id(token) {
-        if (this.cont_begin_end) {
-            this.has_id(token);
-        }
-        else {
-            this.push_id(token.word, ".");
-        }
-    }
-
-    /**
-     * Verifica se o identificador é de um procedimento.
-     * @param {String} token 
-     */
-    verificar_procedimento(token) {
-        if (this.tabela.get_simbolo_tipo(token.word) == "procedure") {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Verifica se o topo da pilha de tipos é booleano
-     */
-    verfica_boolean() {
-
-        if (this.pilha_tipos.topo() == "boolean") {    //[SMT] verifica se o resultado da expressão é booleano
-            this.pilha_tipos.pop()  //[SMT] se for boolean, esvazia a pilha
-        }
-        else {
-            sys.exit("Era esperado um valor booleano. Linha: " + str(this.current.line))
-
-        }
-    }
-
-    /**
-     * Verifica se é uma operação lógica ou não e reduz a pilha de tipos
-     * @param {*} operador 
-     */
-    verficar_operacao(operador) {
-        // TODO: colocar na sintaxe de js
-        if (operador in ["and", "or"]) {
-            if (!this.pilha_tipos.reduz_pct_logico()) { //[SMT] verifica se foi possível reduzir
-                sys.exit("Incompatibilidade de tipos, eram esperado valores booleanos. Linha: " + str(this.current.line));
-
-            }
-        }
-        else {
-            if (!this.pilha_tipos.reduz_pct()) {    //[SMT] verifica se foi possível reduzir
-                sys.exit("Incompatibilidade de tipos. Linha: " + str(this.current.line));
-            }
-        }
-    }
-
+    //  █████╗ ███╗   ██╗██╗      █████╗ ██╗     ██╗███████╗███████╗
+    // ██╔══██╗████╗  ██║██║     ██╔══██╗██║     ██║██╔════╝██╔════╝
+    // ███████║██╔██╗ ██║██║     ███████║██║     ██║███████╗█████╗  
+    // ██╔══██║██║╚██╗██║██║     ██╔══██║██║     ██║╚════██║██╔══╝  
+    // ██║  ██║██║ ╚████║███████╗██║  ██║███████╗██║███████║███████╗
+    // ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚══════╝
+    //                                                              
     comecarAnalise() {
-        if (!sentence())
-            console.log('Sentença inválida');
+        console.log("Iniciando analise");
+
+
+        if (!this.sentence()) {
+            this.utils.printAndSpeek('Invalid Sentence');
+            this.utils.printAndSpeek(this.lastError);
+        } else {
+            this.utils.printAndSpeek("Sentence ok");
+        }
+
+
     }
 
-    sentence(){
-        if(!nounPhrase())
+
+    // Não terminais
+    // ███╗   ██╗ █████╗  ██████╗     ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗███████╗
+    // ████╗  ██║██╔══██╗██╔═══██╗    ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║██╔════╝
+    // ██╔██╗ ██║███████║██║   ██║       ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║███████╗
+    // ██║╚██╗██║██╔══██║██║   ██║       ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║╚════██║
+    // ██║ ╚████║██║  ██║╚██████╔╝       ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║██║███████║
+    // ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚══════╝
+    //                                                                                                    
+
+
+
+    /**
+     * S = NP VP | VP
+     */
+    sentence() {
+        this.nounPhrase();
+
+        if (!this.verbPhrase()) {
             return false;
-        if(!verbPhrase())
-            return false;
+        }
         return true;
     }
 
-    verbPhrase(){
-        if(!verb())
+    /**
+     * VP = verb VP_DESAMBIGUIDADE 
+     */
+    verbPhrase() {
+        if (!this.isVerb()){
             return false;
-        if(!nounPhrase());
+
+        } else{
+             return this.verbPPhrase_desambiguidade();
+        }
+       
+    }
+
+    /**
+     * Retirando a recursividade do método verbPPhrase
+     * 
+     * VP_2 = PP VP' | vazio
+     */
+    verbPhrase_2() {
+        if (this.preposition()){
+            return this.verbPhrase_2();
+        } else{
+            return true ; // vazio
+        }
+    }
+
+    /**
+     * VP_DESAMBIGUIDADE = VP_2 | NP VP_2 | NP PP VP_2 | PP VP_2
+     */
+    verbPPhrase_desambiguidade() {
+        if (this.verbPhrase_2()) {
+            return true;
+        } else if (this.nounPhrase()) {
+            if (this.verbPhrase_2()) {
+                return true;
+            } else if (this.preposition()) {
+                if (this.verbPhrase_2()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else if (this.preposition()) {
+            if (this.verbPhrase_2()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * NP = pronoum | proper_noum | DET NOMINAL
+     */
+    nounPhrase() {
+        if (!this.isPronoun()) {
+            if (!this.isProperNoun()) {
+                if (!this.det()) {
+                    return false
+                } else {
+                    if (!this.nominal()) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+
+
+    }
+
+    /**
+     * NOMINAL = noun NOMINAL_2 |
+     */
+    nominal() {
+        if (this.isNoun()){
+            if (this.nominal_2()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Tratando a recursividade a esquerda do método nominal()
+     * 
+     * NOMINAL_2 = noun NOMINAL_2 | vazio
+     */
+    nominal_2() {
+
+        if (this.isNoun()) {
+            if (this.nominal_2()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * PP = preposition NP
+     */
+    preposition() {
+        if (!this.isPreposition()) {
+            return false;
+        } else {
+            if (!this.nounPhrase()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+
+
+
+    // Terminais
+    // ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗███████╗
+    // ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║██╔════╝
+    //    ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║███████╗
+    //    ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║╚════██║
+    //    ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║██║███████║
+    //    ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚══════╝
+    //                                                                     
+
+
+
+    isNoun() {
+        if (this.current.lex.includes(this.dicionario.NOUN)) {
+            this.next();
+            return true;
+        }
+        this.lastError = `expected a noum after '${this.current.word}' ( token number ${this.index} )`;
+        return false;
+    }
+
+    isVerb() {
+        if (this.current.lex.includes(this.dicionario.VERB)) {
+            this.next();
+            return true;
+        }
+        this.lastError = `expected a verb after '${this.current.word}' ( token number ${this.index} )`;
+        return false;
+    }
+
+    isDeterminant() {
+        if (this.current.lex.includes(this.dicionario.DETERMINER)) {
+            this.next();
+            return true;
+        }
+        this.lastError = `expected a determiner after '${this.current.word}' ( token number ${this.index} )`;
+        return false;
+    }
+
+
+    isPreposition() {
+        if (this.current.lex.includes(this.dicionario.PREPOSITION)) {
+            this.next();
+            return true;
+        }
+        this.lastError = `expected a preposition after '${this.current.word}' ( token number ${this.index} )`;
+        return false;
+    }
+
+    /**
+     * Nós não estamos tratando nomes próprios. Por isso, sempre retorna false
+     */
+    isProperNoun() {
+        this.lastError = `expected a proper noum after '${this.current.word}' ( token number ${this.index} )`;
+        return false
+    }
+
+    isPronoun(){
+        // TODO
+        this.next();
+        this.lastError = `expected a pronoum after '${this.current.word}' ( token number ${this.index} )`;
         return true;
-    }
-
-    nounPhrase(){
-        if(!noun()){
-            if(!determinant())
-                return false;
-            
-            if(!noun())
-                return false;
-            return true;
-        }
-    }
-
-    noun(){
-        if (current.lex().indexOf(dicionario.SUBSTANTIVO) > -1) {
-            this.next();
-            return true;
-        }
-        return false;
-    }
-
-    verb(){
-        if (current.lex().indexOf(dicionario.VERBO) > -1) {
-            this.next();
-            return true;
-        }
-        return false;
-    }
-
-    determinant(){
-        if (current.lex().indexOf(dicionario.DETERMINANTE) > -1)  {
-            this.next();
-            return true;
-        }
-        return false;
     }
 }

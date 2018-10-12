@@ -8,9 +8,9 @@ function runLexico() {
     var lexico = new Lexico();
     var tokens = lexico.analyze(String(document.getElementById('inputArea').value).toLowerCase());
     
-    // var sintatico = new Sintatico(tokens);
+    var sintatico = new Sintatico(tokens);
     
-    // sintatico.comecarAnalise();
+    sintatico.comecarAnalise();
 
     console.log(tokens);
 }

@@ -1,10 +1,6 @@
 import { Dicionario } from "./dicionario.js";
 import { Token } from "./token.js";
 
-const VERB = "verb";
-const NOUN = "noun";
-const PAST = "past";
-
 export class Lexico {
     constructor() {
         console.log("inicializando Lexico");
@@ -40,11 +36,11 @@ export class Lexico {
             Object.keys(result.meaning).map(
                 x => {
                     // se a palavra retornada for verbo, o tempo default é 'present'
-                    if (x == VERB)
+                    if (x == this.dicionario.VERB)
                         classifications.push({ "classificacao": x, "tempoVerbal": "present" });
 
                     // se a palvra retornada for substantivo, por fdefault, ela está em 'singular'
-                    else if (x == NOUN)
+                    else if (x == this.dicionario.NOUN)
                         classifications.push({ "classificacao": x, "isPlural": false });
 
                     // quando a palavra sofre uma alteração (mudança de tempo, ou plural) e a classificação vem como
@@ -52,7 +48,7 @@ export class Lexico {
                     else if (x == "") {
                         var definition = result.meaning[x][0].definition;
                         if (definition.includes("past")) {
-                            classifications.push({ "classificacao": VERB, "tempoVerbal": PAST });
+                            classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
                         }
                     }
 
@@ -77,7 +73,7 @@ export class Lexico {
 
                     else if (definition.includes("past")) {
                         // apenas verbo podem estar no passado
-                        classifications.push({ "classificacao": VERB, "tempoVerbal": PAST });
+                        classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
                     }
                 }
             )

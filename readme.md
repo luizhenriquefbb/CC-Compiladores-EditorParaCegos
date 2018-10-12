@@ -9,12 +9,6 @@ A aplicação deve dar feedbacks para o usuário errors lexicos, sintáticos e s
 # Como Rodar
 
 Em desenvolvimento...
-
-```sh
-npm install
-npm start
-```
-
 # Grupo
 
 Aluno | Matrícula
