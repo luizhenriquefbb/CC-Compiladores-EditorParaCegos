@@ -1,3 +1,7 @@
+// import { TypesStack } from "./typeStack.js";
+// import { SymbolsTable } from "./symbolsTable.js";
+
+
 export class Sintatico {
 
     constructor(list_tokens) {
@@ -111,6 +115,11 @@ export class Sintatico {
     comecarAnalise() {
         if (!sentence())
             console.log('Sentença inválida');
+
+        else{
+            console.log("Sucesso");
+            
+        }
     }
 
     sentence(){

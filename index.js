@@ -1,7 +1,6 @@
 import { Lexico } from "./scripts/lexico.js";
 import { Sintatico } from "./scripts/sintatico.js";
 
-console.log("index.js");
 
 function runLexico() {
     console.log("iniciando teste");
@@ -12,7 +11,12 @@ function runLexico() {
     
     // sintatico.comecarAnalise();
 
+    var sintatico = new Sintatico(tokens);
+
+    sintatico.comecarAnalise();
+
     console.log(tokens);
 }
 
-document.getElementById("buttonReproduce").onclick = runLexico;
+var button = document.getElementById("buttonReproduce");
+button.onclick = runLexico;
