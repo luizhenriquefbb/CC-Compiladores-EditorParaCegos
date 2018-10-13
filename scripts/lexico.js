@@ -49,6 +49,8 @@ export class Lexico {
                         var definition = result.meaning[x][0].definition;
                         if (definition.includes("past")) {
                             classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
+                        } else if (definition.includes("present")) {
+                            classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PRESENT });
                         }
                     }
 

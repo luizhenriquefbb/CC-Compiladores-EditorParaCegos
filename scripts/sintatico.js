@@ -24,10 +24,10 @@ export class Sintatico {
      * Retornar o próximo token da lista
      */
     next() {
-        if (this.index < (this.list_tokens).length) { // verifica se o próximo índice pertence ao array
+        if (this.index + 1 < (this.list_tokens).length) { // verifica se o próximo índice pertence ao array
+            this.index += 1;
             this.current = this.list_tokens[this.index]; // pega o token atual
             // print (this.current)
-            this.index += 1;
             return this.current;
         }
 
@@ -84,9 +84,9 @@ export class Sintatico {
      * S = NP VP | VP
      */
     sentence() {
-        this.nounPhrase();
-
-        if (!this.verbPhrase()) {
+        if (this.nounPhrase()){
+            return this.verbPhrase();
+        } else if (!this.verbPhrase()) {
             return false;
         }
         return true;
@@ -149,11 +149,11 @@ export class Sintatico {
 
     /**
      * NP = pronoum | proper_noum | DET NOMINAL
-     */
+     */ 
     nounPhrase() {
         if (!this.isPronoun()) {
             if (!this.isProperNoun()) {
-                if (!this.det()) {
+                if (!this.isDeterminant()) {
                     return false
                 } else {
                     if (!this.nominal()) {
@@ -233,27 +233,33 @@ export class Sintatico {
 
 
     isNoun() {
-        if (this.current.lex.includes(this.dicionario.NOUN)) {
-            this.next();
-            return true;
+        for (const lex of this.current.lex) {
+            if (lex.classificacao == this.dicionario.NOUN) {
+                this.next();
+                return true;
+            }
         }
-        this.lastError = `expected a noum after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a noun after '${this.current.word}' ( token number ${this.index} )`;
         return false;
     }
 
     isVerb() {
-        if (this.current.lex.includes(this.dicionario.VERB)) {
-            this.next();
-            return true;
+        for (const lex of this.current.lex) {
+            if (lex.classificacao == this.dicionario.VERB) {
+                this.next();
+                return true;
+            }
         }
         this.lastError = `expected a verb after '${this.current.word}' ( token number ${this.index} )`;
         return false;
     }
 
     isDeterminant() {
-        if (this.current.lex.includes(this.dicionario.DETERMINER)) {
-            this.next();
-            return true;
+        for (const lex of this.current.lex) {
+            if (lex.classificacao == this.dicionario.DETERMINER) {
+                this.next();
+                return true;
+            }
         }
         this.lastError = `expected a determiner after '${this.current.word}' ( token number ${this.index} )`;
         return false;
@@ -261,9 +267,11 @@ export class Sintatico {
 
 
     isPreposition() {
-        if (this.current.lex.includes(this.dicionario.PREPOSITION)) {
-            this.next();
-            return true;
+        for (const lex of this.current.lex) {
+            if (lex.classificacao == this.dicionario.PREPOSITION) {
+                this.next();
+                return true;
+            }
         }
         this.lastError = `expected a preposition after '${this.current.word}' ( token number ${this.index} )`;
         return false;
@@ -278,9 +286,14 @@ export class Sintatico {
     }
 
     isPronoun(){
-        // TODO
-        this.next();
+        for (const lex of this.current.lex) {
+            if (lex.classificacao == this.dicionario.PRONOME) {
+                this.next();
+                return true;
+            }
+        }
         this.lastError = `expected a pronoum after '${this.current.word}' ( token number ${this.index} )`;
-        return true;
+        return false;
+
     }
 }
