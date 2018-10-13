@@ -24,16 +24,19 @@ export class Sintatico {
      * Retornar o próximo token da lista
      */
     next() {
-        if (this.index < (this.list_tokens).length) { // verifica se o próximo índice pertence ao array
+        if (this.index < (this.list_tokens).length - 1) { // verifica se o próximo índice pertence ao array
+            this.index += 1;
             this.current = this.list_tokens[this.index]; // pega o token atual
             // print (this.current)
-            this.index += 1;
             return this.current;
         }
 
         this.lastError = "Erro: O programa terminou, mas a análise não";
+        // this.current = {'lex':['default']};
+        // console.log('Tokens acabaram. Usando token auxiliar para testar epsilon');
+        
         throw ("Erro: O programa terminou, mas a análise não");    // caso chegue ao fim da lista sem terminar o programa
-        return null;
+        // return null;
     }
 
     /**
@@ -89,7 +92,12 @@ export class Sintatico {
         if (!this.verbPhrase()) {
             return false;
         }
-        return true;
+
+        if (this.current.word ==  '.')
+            return true;
+        else
+            return false;
+        
     }
 
     /**
@@ -102,7 +110,7 @@ export class Sintatico {
     verbPhrase() {
         if (this.isVerb()){
             if(this.verbPhrase_2()){
-
+                return true;
             }
             else if(this.nounPhrase()){
                 this.preposition();
@@ -198,6 +206,7 @@ export class Sintatico {
      */
     preposition() {
         if(this.isPreposition()){
+            // this.next();
             if(this.nounPhrase())
                 return true;
         }
@@ -219,54 +228,102 @@ export class Sintatico {
 
 
     isNoun() {
-        if (this.current.lex.includes(this.dicionario.NOUN)) {
+
+
+        var retorno = false;
+        this.current.lex.map( (x) => {
+            if(x.classificacao == this.dicionario.NOUN)
+                retorno = true;
+            }
+        );
+        if(retorno){
             this.next();
             return true;
         }
+
+        
         this.lastError = `expected a noum after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
     isVerb() {
-        if (this.current.lex.includes(this.dicionario.VERB)) {
+
+        var retorno = false;
+        this.current.lex.map( (x) => {
+            if(x.classificacao == this.dicionario.VERB)
+                retorno = true;
+            }
+        );
+        if(retorno){
             this.next();
             return true;
         }
+
         this.lastError = `expected a verb after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
     isDeterminer() {
-        if (this.current.lex.includes(this.dicionario.DETERMINER)) {
+
+        var retorno = false;
+        this.current.lex.map( (x) => {
+            if(x.classificacao == this.dicionario.DETERMINER)
+                retorno = true;
+            }
+        );
+        if(retorno){
             this.next();
             return true;
         }
+
         this.lastError = `expected a determiner after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
 
     isPreposition() {
-        if (this.current.lex.includes(this.dicionario.PREPOSITION)) {
+
+        var retorno = false;
+        this.current.lex.map( (x) => {
+            if(x.classificacao == this.dicionario.PREPOSITION)
+                retorno = true;
+            }
+        );
+        if(retorno){
             this.next();
             return true;
         }
+
         this.lastError = `expected a preposition after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
     /**
-     * Nós não estamos tratando nomes próprios. Por isso, sempre retorna false
+     * Tratando substantivos próprios apenas verificando se a palavra começa com letra maiúscula
      */
     isProperNoun() {
+        if(this.current.word[0] === this.current.word[0].toUpperCase() ){
+            this.next();
+            return true;
+        }
         this.lastError = `expected a proper noum after '${this.current.word}' ( word number ${this.index} )`;
         return false
     }
 
     isPronoun(){
-        // TODO
-        this.next();
+
+        var retorno = false;
+        this.current.lex.map( (x) => {
+            if(x.classificacao == this.dicionario.PRONOME)
+                retorno = true;
+            }
+        );
+        if(retorno){
+            this.next();
+            return true;
+        }
+
         this.lastError = `expected a pronoum after '${this.current.word}' ( word number ${this.index} )`;
-        return true;
+        return false;
     }
 }

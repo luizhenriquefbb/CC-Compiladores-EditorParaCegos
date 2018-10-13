@@ -37,7 +37,7 @@ export class Lexico {
         if(result == null){
             console.log("Word not found");
             this.utils.printAndSpeek(`The word ${str} was not found`);
-            
+            throw(`The word ${str} was not found`);
         }
         // se a palavra retornada for igual a palavra buscada
         if (result.word == str) {
@@ -150,11 +150,18 @@ export class Lexico {
             }
 
             // nova palavra; separar o token
-            else if ([' ', '.', ','].includes(program[i])) {
+            else if ([' ', ','].includes(program[i])) {
                 // ignorar
                 i += 1;
                 token = '';
                 continue;
+            }
+            else if(program[i] == '.'){
+                token = '';
+                result.push(new Token('.', [{'classificacao': 'delimitador'}], line_count));
+                i += 1;
+                continue;
+
             }
         }
 

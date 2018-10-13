@@ -348,7 +348,34 @@ export class Dicionario {
                         ]
                     }
                 };
-
+            case 'be':
+                return {
+                    "word": "be",
+                        "phonetic": [
+                            "biː"
+                        ],
+                            "meaning": {
+                        "verb": [
+                            {
+                                "definition": "used with a present participle to form continuous tenses.",
+                                "example": "they are coming"
+                            },
+                            {
+                                "definition": "used with a past participle to form the passive voice.",
+                                "example": "it was done"
+                            },
+                            {
+                                "definition": "used to indicate something that is due or destined to happen.",
+                                "example": "construction is to begin next summer"
+                            },
+                            {
+                                "definition": "used with the past participle of intransitive verbs to form perfect tenses.",
+                                "example": "I am returned"
+                            }
+                        ]
+                    }
+                };
+                
 
             default:
                 throw ("palavra errada");
