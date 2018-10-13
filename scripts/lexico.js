@@ -1,10 +1,13 @@
 import { Dicionario } from "./dicionario.js";
 import { Token } from "./token.js";
+import { utils } from "./utils.js";
+
 
 export class Lexico {
     constructor() {
         console.log("inicializando Lexico");
         this.dicionario = new Dicionario();
+        this.utils = utils;
     }
 
     /**
@@ -31,6 +34,11 @@ export class Lexico {
     classify(str) {
         var classifications = [];
         var result = this.dicionario.queryWord(str);
+        if(result == null){
+            console.log("Word not found");
+            this.utils.printAndSpeek(`The word ${str} was not found`);
+            
+        }
         // se a palavra retornada for igual a palavra buscada
         if (result.word == str) {
             Object.keys(result.meaning).map(
@@ -47,8 +55,11 @@ export class Lexico {
                     // string vazia por causa disso
                     else if (x == "") {
                         var definition = result.meaning[x][0].definition;
-                        if (definition.includes("past")) {
+                        if (definition.includes(this.dicionario.PAST)) {
                             classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
+                        }
+                        else if (definition.includes(this.dicionario.PRESENT)) {
+                            classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PRESENT });
                         }
                     }
 
@@ -68,10 +79,10 @@ export class Lexico {
                     // palavras no irregular e regular, respectivamente
                     if (definition.includes("plural form of") || str.endsWith("s")) {
                         // apenas substantivos têm plural
-                        classifications.push({ "classificacao": NOUN, "isPlural": true });
+                        classifications.push({ "classificacao": this.dicionario.NOUN, "isPlural": true });
                     }
 
-                    else if (definition.includes("past")) {
+                    else if (definition.includes(this.dicionario.PAST)) {
                         // apenas verbo podem estar no passado
                         classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
                     }

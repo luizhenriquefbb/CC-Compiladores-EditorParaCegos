@@ -9,6 +9,7 @@ export class Dicionario {
         this.NOUN = 'noun';
         this.VERB = 'verb';
         this.PAST = "past";
+        this.PRESENT = "present";
         this.DETERMINER = "determiner";
         this.PREPOSITION = "preposition";
 
@@ -35,7 +36,6 @@ export class Dicionario {
 
             },
             error: function (error) {
-
                 console.log(JSON.stringify(error));
                 // alert("TIME OUT - there is a network issue. Please try again later");
             },

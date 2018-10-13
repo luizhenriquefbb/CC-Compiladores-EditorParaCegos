@@ -47,12 +47,12 @@ export class Sintatico {
 
     // Analise
 
-    //  █████╗ ███╗   ██╗██╗      █████╗ ██╗     ██╗███████╗███████╗
-    // ██╔══██╗████╗  ██║██║     ██╔══██╗██║     ██║██╔════╝██╔════╝
-    // ███████║██╔██╗ ██║██║     ███████║██║     ██║███████╗█████╗  
-    // ██╔══██║██║╚██╗██║██║     ██╔══██║██║     ██║╚════██║██╔══╝  
-    // ██║  ██║██║ ╚████║███████╗██║  ██║███████╗██║███████║███████╗
-    // ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚══════╝
+    //  █████╗ ███╗   ██╗ █████╗ ██╗     ██╗███████╗███████╗
+    // ██╔══██╗████╗  ██║██╔══██╗██║     ██║██╔════╝██╔════╝
+    // ███████║██╔██╗ ██║███████║██║     ██║███████╗█████╗  
+    // ██╔══██║██║╚██╗██║██╔══██║██║     ██║╚════██║██╔══╝  
+    // ██║  ██║██║ ╚████║██║  ██║███████╗██║███████║███████╗
+    // ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚══════╝
     //                                                              
     comecarAnalise() {
         console.log("Iniciando analise");
@@ -93,83 +93,71 @@ export class Sintatico {
     }
 
     /**
-     * VP = verb VP_DESAMBIGUIDADE 
+     * VP = verb verbPhrase_2
+     * | verb NP verbPhrase_2
+     * | verb NP PP verbPhrase_2
+     * | verb PP verbPhrase_2
+     * | verbPhrase_2
      */
     verbPhrase() {
-        if (!this.isVerb()){
-            return false;
+        if (this.isVerb()){
+            if(this.verbPhrase_2()){
 
-        } else{
-             return this.verbPPhrase_desambiguidade();
+            }
+            else if(this.nounPhrase()){
+                this.preposition();
+                if(!this.verbPhrase_2())
+                    return false;
+
+                return true;
+            }
+            else if(this.preposition()){
+                if(!this.verbPhrase_2())
+                    return false;
+            }
+            else{
+                if(!this.verbPhrase_2())
+                    return false;
+                
+                return true; //apenas verbo
+            }  
+
+        }
+        else{
+            return this.verbPhrase_2();
         }
        
     }
 
     /**
-     * Retirando a recursividade do método verbPPhrase
+     * Retirando a recursividade a esquerda do método verbPhrase
      * 
-     * VP_2 = PP VP' | vazio
+     * verbPhrase_2 = PP VP_2 | ε
      */
     verbPhrase_2() {
         if (this.preposition()){
             return this.verbPhrase_2();
-        } else{
-            return true ; // vazio
+        }
+        else{
+            return true ; // epsilon
         }
     }
 
     /**
-     * VP_DESAMBIGUIDADE = VP_2 | NP VP_2 | NP PP VP_2 | PP VP_2
-     */
-    verbPPhrase_desambiguidade() {
-        if (this.verbPhrase_2()) {
-            return true;
-        } else if (this.nounPhrase()) {
-            if (this.verbPhrase_2()) {
-                return true;
-            } else if (this.preposition()) {
-                if (this.verbPhrase_2()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else if (this.preposition()) {
-            if (this.verbPhrase_2()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * NP = pronoum | proper_noum | DET NOMINAL
+     * NP = pronoum 
+     * | proper_noum 
+     * | DET NOMINAL
      */
     nounPhrase() {
-        if (!this.isPronoun()) {
-            if (!this.isProperNoun()) {
-                if (!this.det()) {
-                    return false
-                } else {
-                    if (!this.nominal()) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            } else {
-                return true;
-            }
-        } else {
+        if(this.isPronoun())
             return true;
+        else if(this.isProperNoun())
+            return true;
+        else if(this.isDeterminer()){
+            if(this.nominal())
+                return true;
         }
-
-
+        return false;
     }
 
     /**
@@ -177,45 +165,43 @@ export class Sintatico {
      */
     nominal() {
         if (this.isNoun()){
-            if (this.nominal_2()){
+            if (this.nominal_2())
                 return true;
-            }
         }
-
         return false;
     }
 
     /**
      * Tratando a recursividade a esquerda do método nominal()
      * 
-     * NOMINAL_2 = noun NOMINAL_2 | vazio
+     * NOMINAL_2 = noun NOMINAL_2 
+     * | PP NOMINAL_2 
+     * | vazio
      */
     nominal_2() {
 
         if (this.isNoun()) {
-            if (this.nominal_2()) {
+            if (this.nominal_2())
                 return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
+            return false;
         }
+        else if(this.preposition()){
+            if (this.nominal_2())
+                return true;
+            return false;
+        }
+        return true; //epsilon
     }
 
     /**
      * PP = preposition NP
      */
     preposition() {
-        if (!this.isPreposition()) {
-            return false;
-        } else {
-            if (!this.nounPhrase()) {
-                return false;
-            } else {
+        if(this.isPreposition()){
+            if(this.nounPhrase())
                 return true;
-            }
         }
+        return false;
     }
 
 
@@ -237,7 +223,7 @@ export class Sintatico {
             this.next();
             return true;
         }
-        this.lastError = `expected a noum after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a noum after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
@@ -246,16 +232,16 @@ export class Sintatico {
             this.next();
             return true;
         }
-        this.lastError = `expected a verb after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a verb after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
-    isDeterminant() {
+    isDeterminer() {
         if (this.current.lex.includes(this.dicionario.DETERMINER)) {
             this.next();
             return true;
         }
-        this.lastError = `expected a determiner after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a determiner after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
@@ -265,7 +251,7 @@ export class Sintatico {
             this.next();
             return true;
         }
-        this.lastError = `expected a preposition after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a preposition after '${this.current.word}' ( word number ${this.index} )`;
         return false;
     }
 
@@ -273,14 +259,14 @@ export class Sintatico {
      * Nós não estamos tratando nomes próprios. Por isso, sempre retorna false
      */
     isProperNoun() {
-        this.lastError = `expected a proper noum after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a proper noum after '${this.current.word}' ( word number ${this.index} )`;
         return false
     }
 
     isPronoun(){
         // TODO
         this.next();
-        this.lastError = `expected a pronoum after '${this.current.word}' ( token number ${this.index} )`;
+        this.lastError = `expected a pronoum after '${this.current.word}' ( word number ${this.index} )`;
         return true;
     }
 }
