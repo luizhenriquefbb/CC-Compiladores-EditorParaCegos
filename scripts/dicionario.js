@@ -13,8 +13,8 @@ export class Dicionario {
         this.DETERMINER = "determiner";
         this.PREPOSITION = "preposition";
 
-        this.PRONOME = 'pronoum';
-        this.ADVERBIO = 'TODO';
+        this.PRONOME = 'pronoun';
+        this.ADVERBIO = 'adverb';
         
     }
 
@@ -51,7 +51,7 @@ export class Dicionario {
      * Só para teste. Usar método acima quando estiver em produção
      * @param {*} palavra 
      */
-    queryWord_for_test(palavra) {
+    queryWord_test(palavra) {
         switch (palavra) {
             case 'the':
                 return {
@@ -349,12 +349,13 @@ export class Dicionario {
                     }
                 };
             case 'be':
+
                 return {
                     "word": "be",
-                        "phonetic": [
-                            "biː"
-                        ],
-                            "meaning": {
+                    "phonetic": [
+                        "biː"
+                    ],
+                    "meaning": {
                         "verb": [
                             {
                                 "definition": "used with a present participle to form continuous tenses.",
@@ -375,7 +376,6 @@ export class Dicionario {
                         ]
                     }
                 };
-                
 
             default:
                 throw ("palavra errada");
