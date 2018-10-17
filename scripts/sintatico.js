@@ -24,7 +24,7 @@ export class Sintatico {
      * Retornar o próximo token da lista
      */
     next() {
-        if (this.index + 1 < (this.list_tokens).length) { // verifica se o próximo índice pertence ao array
+        if (this.index < (this.list_tokens).length - 1) { // verifica se o próximo índice pertence ao array
             this.index += 1;
             this.current = this.list_tokens[this.index]; // pega o token atual
             // print (this.current)
@@ -87,9 +87,9 @@ export class Sintatico {
      * S = NP VP | VP
      */
     sentence() {
-        if (this.nounPhrase()){
-            return this.verbPhrase();
-        } else if (!this.verbPhrase()) {
+        this.nounPhrase();
+
+        if (!this.verbPhrase()) {
             return false;
         }
 
