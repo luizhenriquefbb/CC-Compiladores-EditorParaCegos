@@ -93,7 +93,7 @@ export class Sintatico {
             return false;
         }
 
-        if (this.current.word ==  '.')
+        if (['.','!','?'].includes(this.current.word))
             return true;
         else
             return false;
@@ -109,10 +109,7 @@ export class Sintatico {
      */
     verbPhrase() {
         if (this.isVerb()){
-            if(this.verbPhrase_2()){
-                return true;
-            }
-            else if(this.nounPhrase()){
+            if(this.nounPhrase()){
                 this.preposition();
                 if(!this.verbPhrase_2())
                     return false;
@@ -122,6 +119,10 @@ export class Sintatico {
             else if(this.preposition()){
                 if(!this.verbPhrase_2())
                     return false;
+                return true;
+            }
+            else if(this.verbPhrase_2()){
+                return true;
             }
             else{
                 if(!this.verbPhrase_2())
