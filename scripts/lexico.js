@@ -156,9 +156,13 @@ export class Lexico {
                 token = '';
                 continue;
             }
-            else if(program[i] == '.'){
+
+            // delimitadores
+            else if(['.', '?', '!'].includes(program[i])){
                 token = '';
-                result.push(new Token('.', [{'classificacao': 'delimitador'}], line_count));
+                // TODO: 'delimitador' deve ser parametrizado
+                result.push(new Token(program[i], [{'classificacao': 'delimitador'}], line_count));
+
                 i += 1;
                 continue;
 

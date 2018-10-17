@@ -9,15 +9,15 @@ export class Sintatico {
         this.index = 0;      //índice do token atual
         this.current = this.list_tokens[0];    //token atual
         
-        this.cont_begin_end = 0;     //contador de begin e end
         
-
         this.utils = utils;
         this.dicionario = new Dicionario();
 
 
         // Guarda o ultimo erro gerado para exibir ao usuário
         this.lastError = ''; 
+
+        
     }
 
     /**
