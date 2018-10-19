@@ -12,9 +12,9 @@ export class Dicionario {
         this.PRESENT = "present";
         this.DETERMINER = "determiner";
         this.PREPOSITION = "preposition";
-
-        this.PRONOME = 'pronoum';
-        this.ADVERBIO = 'TODO';
+        this.AUXILIAR = "auxiliar verb"
+        this.PRONOUM = 'pronoum';
+        this.ADVERB = 'TODO';
         
     }
 
@@ -152,20 +152,6 @@ export class Dicionario {
                             {
                                 "definition": "leave suddenly.",
                                 "example": "they just ate your pizza and drank your soda and booked"
-                            }
-                        ]
-                    }
-                };
-            case 'is':
-                return {
-                    "word": "is",
-                    "phonetic": [
-                        "ɪz"
-                    ],
-                    "meaning": {
-                        "": [
-                            {
-                                "definition": "third person singular present of be."
                             }
                         ]
                     }
@@ -348,34 +334,152 @@ export class Dicionario {
                         ]
                     }
                 };
-            case 'be':
+            case 'is':
+// "third person singular present of be."
                 return {
-                    "word": "be",
-                        "phonetic": [
-                            "biː"
-                        ],
-                            "meaning": {
-                        "verb": [
+                    "word": "is",
+                    "meaning": {
+                        "auxiliar verb": [
                             {
-                                "definition": "used with a present participle to form continuous tenses.",
-                                "example": "they are coming"
-                            },
-                            {
-                                "definition": "used with a past participle to form the passive voice.",
-                                "example": "it was done"
-                            },
-                            {
-                                "definition": "used to indicate something that is due or destined to happen.",
-                                "example": "construction is to begin next summer"
-                            },
-                            {
-                                "definition": "used with the past participle of intransitive verbs to form perfect tenses.",
-                                "example": "I am returned"
+                                "person": "third",
+                                "number":"singular",
+                                "tense": "present"
                             }
                         ]
                     }
                 };
-                
+            case 'are':
+// "second person singular present and first, second, third person plural present of be."
+                return {
+                    "word": "are",
+                    "meaning": {
+                        "auxiliar verb": [
+                            {
+                                "person": "second",
+                                "number":"singular",
+                                "tense": "present"
+                            },
+                            {
+                                "person": "first",
+                                "number":"plural",
+                                "tense": "present"
+                            },
+                            {
+                                "person": "second",
+                                "number":"plural",
+                                "tense": "present"
+                            },
+                            {
+                                "person": "third",
+                                "number":"plural",
+                                "tense": "present"
+                            },
+
+                        ]
+                    }
+                };
+
+            case 'am':
+                return {
+                    "word": "am",
+                    "meaning": {
+                        "auxiliar verb": [
+                            {
+                                "person": "first",
+                                "number":"singular",
+                                "tense": "present"
+                            }
+                        ]
+                    }
+                };    
+            case 'I':
+                return {
+                    "word": "I",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "first",
+                                "number":"singular"
+                            }
+                        ]
+                    }
+                };    
+            case 'you':
+                return {
+                    "word": "you",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "second",
+                                "number":"singular"
+                            },
+                            {
+                                "person": "second",
+                                "number":"plural"
+                            }
+                        ]
+                    }
+                };    
+            case 'he':
+                return {
+                    "word": "he",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "third",
+                                "number":"singular"
+                            }
+                        ]
+                    }
+                };    
+            case 'she':
+                return {
+                    "word": "she",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "third",
+                                "number":"singular"
+                            }
+                        ]
+                    }
+                };    
+            case 'it':
+                return {
+                    "word": "it",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "third",
+                                "number":"singular"
+                            }
+                        ]
+                    }
+                };    
+            case 'we':
+                return {
+                    "word": "we",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "first",
+                                "number":"plural"
+                            }
+                        ]
+                    }
+                };    
+            case 'they':
+                return {
+                    "word": "they",
+                    "meaning": {
+                        "pronoum": [
+                            {
+                                "person": "third",
+                                "number":"plural"
+                            }
+                        ]
+                    }
+                };   
 
             default:
                 return this.queryWord_(palavra);
