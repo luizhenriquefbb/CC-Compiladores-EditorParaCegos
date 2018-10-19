@@ -5,9 +5,13 @@ class Utils{
     }
 
     printAndSpeek(str){
+        if (str == ''){
+            return;
+        }
         console.log(str);
-        responsiveVoice.speak(str);
-        
+        do{
+            responsiveVoice.speak(str);
+        }while(!confirm("Do you want understand?"));
     }
 }
 
