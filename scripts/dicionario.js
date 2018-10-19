@@ -14,6 +14,7 @@ export class Dicionario {
         this.PREPOSITION = "preposition";
         this.AUXILIAR = "auxiliar verb"
         this.PRONOUM = 'pronoum';
+        this.PROPER_NOUN = 'proper noun'
         this.ADVERB = 'TODO';
         
     }

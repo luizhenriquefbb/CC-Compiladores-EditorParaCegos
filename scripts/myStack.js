@@ -81,9 +81,9 @@ export class MyStack {
     /**
      * Reduz a pilha analisando pessoa vs pessoa
      * 
-     * ex: The girls is pretty
+     * ex: The girls is pretty (está errado)
      * 
-     * @returns retorna um objeto {status: [true ou false], erro: [caso tenha dado errado, explica qual o erro para exibir ao usuario]}
+     * @returns retorna 'ok' se estiver certo ou uma string com o erro
      */
     reduz_pessoa() {
         // verifica se a pilha tem ao menos 2 elementos para serem comparados
@@ -122,7 +122,7 @@ export class MyStack {
                     subTopoPessoaNumero.push({"person":y.person,"number":y.number});
                 });
             }
-            
+            //outros NP's (nome proprio ou substantivo)
             else if (x["isPlural"] == false) {
                 subTopoPessoaNumero.push({"person":'all',"number":'singular'});
             } else if (x["isPlural"] == true) {
@@ -131,8 +131,7 @@ export class MyStack {
             // não coloco else, pq a chave pode nao estar setada, (estar vazia) e isso pode gerar um erro
         });
 
-        // var similarities = _.intersection(topoPessoaNumero, subTopoPessoaNumero);
-
+        
         var retorno = false;
         topoPessoaNumero.map(topo => {
             subTopoPessoaNumero.map(subtopo => {
@@ -149,9 +148,11 @@ export class MyStack {
             })
         });
 
-        if(retorno)
+        if(retorno){
+            this.atualiza_pct();
             return 'ok';
-        return `Person incompatibility between the words ${topo.word} and ${subTopo.word}`;
+        }
+        return `Person incompatibility between the words \'${topo.word}\' and \'${subTopo.word}\'`;
 
 
         // ve se são compativeis
@@ -217,6 +218,14 @@ export class MyStack {
         this.pilha.pop();
         this.pilha.pop();
         this.push(tipo);
+    }
+    /**
+     * Remove os elementos de analise.
+     */
+    atualiza_pct() {
+
+        this.pilha.pop();
+        this.pilha.pop();
     }
 
     /**

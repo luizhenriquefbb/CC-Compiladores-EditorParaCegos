@@ -324,7 +324,7 @@ export class Sintatico {
      * Tratando substantivos próprios apenas verificando se a palavra começa com letra maiúscula
      */
     isProperNoun() {
-        if(this.current.word[0] != '.' && this.current.word[0] === this.current.word[0].toUpperCase() ){
+        if(this.current.lex[0].classificacao == this.dicionario.PROPER_NOUN){
             this.next();
             return true;
         }

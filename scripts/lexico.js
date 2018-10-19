@@ -119,7 +119,7 @@ export class Lexico {
         var token = "";
         var tam = program.length;
         var i = 0;
-        var lex = "";
+        var lex = [];
         var result = [];
 
         // verifica caractere a caractere
@@ -155,9 +155,12 @@ export class Lexico {
                     else
                         break;
                 }
-
-                // classificar:
-                lex = this.classify(token);
+                //nome proprio
+                if(token[0] != '.' && token[0] === token[0].toUpperCase() )
+                    lex.push({ "classificacao": this.dicionario.PROPER_NOUN, "personNumber": [{person:'third', number:'singular'}] });
+                
+                else
+                    lex = this.classify(token);
                 
                 if (lex == false )return {status:false, word: token};
 
