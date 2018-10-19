@@ -3,6 +3,7 @@
  */
 
 import { Dicionario } from "./dicionario.js";
+// import * as _ from './libs/underscore.js'
 
 
 export class MyStack {
@@ -17,8 +18,8 @@ export class MyStack {
     /**
      * Colocar um novo tipo na pilha
      */
-    push(tipo) {
-        this.pilha.push(tipo);
+    push(element) {
+        this.pilha.push(element);
     }
 
 
@@ -74,6 +75,92 @@ export class MyStack {
         } else {
             return { status: false, erro: `number incompatibility between the words ${topo.word} and ${subTopo.word}` }
         }
+
+    }
+
+    /**
+     * Reduz a pilha analisando pessoa vs pessoa
+     * 
+     * ex: The girls is pretty
+     * 
+     * @returns retorna um objeto {status: [true ou false], erro: [caso tenha dado errado, explica qual o erro para exibir ao usuario]}
+     */
+    reduz_pessoa() {
+        // verifica se a pilha tem ao menos 2 elementos para serem comparados
+        if (this.pilha.length < 2) {
+            return { status: false, erro: "stack len is less than two" };
+        }
+
+        var topo = this.pilha[this.pilha.length - 1];
+        var subTopo = this.pilha[this.pilha.length - 2];
+
+        // pegar o 'numero' do topo
+        var topoPessoaNumero = [];
+        topo.lex.map((x) => {
+            //ou seja, verbo auxiliar (is,am,are)
+            if(x["classificacaoDetalhada"] == this.Dicionario.AUXILIAR){
+                if(x['personTenseNumber']){
+                    x['personTenseNumber'].map(y=>{
+                        topoPessoaNumero.push({"person":y.person,"number":y.number});
+                    });
+                }
+            }
+            else if (x["isPlural"] == false) {
+                topoPessoaNumero.push({"person":'all',"number":'singular'});
+            } else if (x["isPlural"] == true) {
+                topoPessoaNumero.push({"person":'all',"number":'plural'});
+            }
+            // não coloco else, pq a chave pode nao estar setada, (estar vazia) e isso pode gerar um erro
+        });
+
+        // pegar o numero do subtopo
+        var subTopoPessoaNumero = [];
+        subTopo.lex.map((x) => {
+            //ou seja, pronome
+            if(x['personNumber']){
+                x['personNumber'].map(y=>{
+                    subTopoPessoaNumero.push({"person":y.person,"number":y.number});
+                });
+            }
+            
+            else if (x["isPlural"] == false) {
+                subTopoPessoaNumero.push({"person":'all',"number":'singular'});
+            } else if (x["isPlural"] == true) {
+                subTopoPessoaNumero.push({"person":'all',"number":'plural'});
+            }
+            // não coloco else, pq a chave pode nao estar setada, (estar vazia) e isso pode gerar um erro
+        });
+
+        // var similarities = _.intersection(topoPessoaNumero, subTopoPessoaNumero);
+
+        var retorno = false;
+        topoPessoaNumero.map(topo => {
+            subTopoPessoaNumero.map(subtopo => {
+                if(topo.person == subtopo.person){
+                    if(topo.number == subtopo.number){
+                        retorno = true;
+                    }
+                }
+                else if(topo.person == 'all' || subtopo.person == 'all'){
+                    if(topo.number == subtopo.number){
+                        retorno = true;
+                    }
+                }
+            })
+        });
+
+        if(retorno)
+            return 'ok';
+        return `Person incompatibility between the words ${topo.word} and ${subTopo.word}`;
+
+
+        // ve se são compativeis
+        // if (topoNumero  == subTopoPessoa) {
+        //     this.atualiza_pct(topoNumero );
+        //     return { status: true };
+        // } else {
+        //     return { status: false, erro: `number incompatibility between the words ${topo.word} and ${subTopo.word}` }
+        // }
 
     }
 

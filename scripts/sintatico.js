@@ -1,5 +1,6 @@
 import { utils } from "./utils.js";
 import { Dicionario } from "./dicionario.js";
+import { MyStack } from "./myStack.js";
 export class Sintatico {
 
     constructor(list_tokens) {
@@ -16,6 +17,7 @@ export class Sintatico {
 
         // Guarda o ultimo erro gerado para exibir ao usuário
         this.lastError = {mensagem : '', local : {word : '', wordPosition: 0}}; 
+        this.personNumber = new MyStack();
 
         
     }
@@ -95,6 +97,8 @@ export class Sintatico {
         }
         
         this.nounPhrase();
+        this.personNumber.push(this.list_tokens[this.index - 1])
+
 
         if (!this.verbPhrase()) {
             return false;
@@ -116,6 +120,12 @@ export class Sintatico {
      */
     verbPhrase() {
         if (this.isVerb()){
+            this.personNumber.push(this.list_tokens[this.index - 1])
+            var message = this.personNumber.reduz_pessoa();
+            if(message != 'ok'){
+                this.lastError.mensagem = message;
+                return false;
+            }
             if(this.nounPhrase()){
                 this.preposition();
                 if(!this.verbPhrase_2())
@@ -314,7 +324,7 @@ export class Sintatico {
      * Tratando substantivos próprios apenas verificando se a palavra começa com letra maiúscula
      */
     isProperNoun() {
-        if(this.current.word[0] === this.current.word[0].toUpperCase() ){
+        if(this.current.word[0] != '.' && this.current.word[0] === this.current.word[0].toUpperCase() ){
             this.next();
             return true;
         }
@@ -327,7 +337,7 @@ export class Sintatico {
 
         var retorno = false;
         this.current.lex.map( (x) => {
-            if(x.classificacao == this.dicionario.PRONOME)
+            if(x.classificacao == this.dicionario.PRONOUM)
                 retorno = true;
             }
         );

@@ -46,11 +46,19 @@ export class Lexico {
                 x => {
                     // se a palavra retornada for verbo, o tempo default é 'present'
                     if (x == this.dicionario.VERB)
-                        classifications.push({ "classificacao": x, "tempoVerbal": "present" });
+                        classifications.push({ "classificacao": x, "tempoVerbal": "present", "isPlural":false });
 
                     // se a palvra retornada for substantivo, por fdefault, ela está em 'singular'
                     else if (x == this.dicionario.NOUN)
                         classifications.push({ "classificacao": x, "isPlural": false });
+                    
+                    else if (x == this.dicionario.PRONOUM)
+                        classifications.push({ "classificacao": x, "personNumber": result.meaning[x] });
+                    
+                    else if(x == this.dicionario.AUXILIAR){
+
+                        classifications.push({ "classificacao": this.dicionario.VERB, "classificacaoDetalhada": this.dicionario.AUXILIAR, "personTenseNumber":result.meaning[x] });
+                    }
 
                     // quando a palavra sofre uma alteração (mudança de tempo, ou plural) e a classificação vem como
                     // string vazia por causa disso

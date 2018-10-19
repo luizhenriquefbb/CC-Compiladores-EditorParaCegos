@@ -475,7 +475,7 @@ export class Dicionario {
                         "pronoum": [
                             {
                                 "person": "third",
-                                "number":"plural"
+                                "number": "plural"
                             }
                         ]
                     }
