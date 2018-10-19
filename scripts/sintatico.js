@@ -64,8 +64,10 @@ export class Sintatico {
         if (!this.sentence()) {
             this.utils.printAndSpeek('Invalid Sentence');
             this.utils.printAndSpeek(this.lastError);
+            return false;
         } else {
             this.utils.printAndSpeek("Sentence ok");
+            return true;
         }
 
 
@@ -243,7 +245,7 @@ export class Sintatico {
         }
 
         
-        this.lastError = `expected a noum after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError = `expected a noum after '${this.current.word}' ( word number ${this.index+1} )`;
         return false;
     }
 

@@ -86,6 +86,14 @@ export class Lexico {
                         // apenas verbo podem estar no passado
                         classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
                     }
+
+                    // default
+                    else{
+                        // TODO: a palavra é diferente, mas nao estamos cobrindo o caso específico: devemos guardar pelo menos a classificação da palavra original
+                        // ex: 'rainning' retorna 'rain' (verbo)
+                        classifications.push({ "classificacao": x });
+                        
+                    }
                 }
             )
         }

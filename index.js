@@ -6,14 +6,34 @@ console.log("index.js");
 function runLexico() {
     console.log("iniciando teste");
     var lexico = new Lexico();
-    var tokens = lexico.analyze(String(document.getElementById('inputArea').value));
 
-    var sintatico = new Sintatico(tokens);
+    // pegar o texto completo
+    var txtCompleto = String(document.getElementById('inputArea').value);
+    var frases = txtCompleto.split(/[.!?]/);
 
-    sintatico.comecarAnalise();
+    // separar em frases e analisar indivudalmente
+    for (const frase of frases) {
+        
+        // não precisa analisar tokens vazios
+        if (frase == '') {
+            continue;
+        }
 
-    console.log(tokens);
+        // recolocar o '.' no final da frase para a gramática aceitar
+        var tokens = lexico.analyze(frase+'.');
+    
+        var sintatico = new Sintatico(tokens);
+    
+        // se alguma frase der errado, para a execução
+        if (sintatico.comecarAnalise() == false){
+            break;
+        }
+    
+        console.log(tokens);
+    }
+
 }
+
 
 document.getElementById("buttonReproduce").onclick = runLexico;
 

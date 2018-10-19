@@ -8,7 +8,11 @@ A aplicação deve dar feedbacks para o usuário errors lexicos, sintáticos e s
 
 # Como Rodar
 
-Em desenvolvimento...
+Apenas abra o [index.html](index.html) no seu browser. E escreva a frase ou texto. Ao finalizar clique em 'tab' depois 'enter' para que a análise comece.
+
+Ao final da análise se houver alguma palavra errada, a palavra errada vai estar selecionada para que o usuário faça a correção.
+
+
 # Grupo
 
 Aluno | Matrícula
@@ -22,7 +26,7 @@ Alisson Galiza | 11408126
 
 Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
-## Gramática
+<!-- ## Gramática
 
 1 | 2
 ------ | --
@@ -58,10 +62,25 @@ onde
         ex: Sarah’s long black hair
 
     VP == [Verb Phrase]
-        ex: eating apples
+        ex: eating apples -->
 
 ## Gramática
 
 [Explicações sobre a gramática utilizada](https://web.stanford.edu/~jurafsky/slp3/11.pdf)
 
 ![](gramatica.png)
+
+## Limitações
+Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
+
+- Não reconhece **adjetivos**.
+- Precisa que a frase seja escrita por completo para só então começar a análise pois estamos usando uma API para classificar as palavras (parte léxica), e esta é um pouco lenta (uma requisição por palavra). Entã a melhor maneira é apenas começar  análise depois que o texto for escrito.
+
+## TODO:
+- Análise semântica
+    - Colocar no sintatico, pontos chaves que avaliam a semântica da frase
+
+- Rever uma parte da grmática
+    - A frase `'I like dogs'` não funciona, mas `'I like the dogs'` sim.
+
+- Selecionar parte do texto onde o erro aconteceu

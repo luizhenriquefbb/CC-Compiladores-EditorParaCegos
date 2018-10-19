@@ -22,7 +22,7 @@ export class Dicionario {
      * consulta uma palavra na API
      * @param {String} palavra token
      */
-    queryWord(palavra) {
+    queryWord_(palavra) {
         console.log(`Iniciando teste de api para a palavra '${palavra}'`);
         var retorno = null;
         $.ajax({
@@ -48,10 +48,10 @@ export class Dicionario {
     }
 
     /**
-     * Só para teste. Usar método acima quando estiver em produção
+     * Só para teste. Algumas palavra em memória. Usar método acima quando estiver em produção
      * @param {*} palavra 
      */
-    queryWord_(palavra) {
+    queryWord(palavra) {
         switch (palavra) {
             case 'the':
                 return {
