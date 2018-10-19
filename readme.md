@@ -84,3 +84,8 @@ Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
     - A frase `'I like dogs'` não funciona, mas `'I like the dogs'` sim.
 
 - Selecionar parte do texto onde o erro aconteceu
+    - Para completar essa tarefa precisa:
+        - Pegar a posicao inicial do token
+        - Pegar o incio da frase
+
+

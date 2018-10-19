@@ -5,7 +5,13 @@
     <meta charset="utf-8" />
     <title>Editor para Cegos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="scripts/estilos.css" />
+    
+    <!-- materialize -->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" media="screen" href="estilos/materialize.min.css" />
+    <!-- Compiled and minified JavaScript -->
+    <script src="estilos/materialize.min.js"></script>
+
 
     <!-- reprodutor de voz -->
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
@@ -22,27 +28,23 @@
 </head>
 
 <body>
-    <textarea name="" id="inputArea" cols="30" rows="10"></textarea>
-    <button id="buttonReproduce">reproduce</button>
-    <!-- <script type="module">
-        import { Lexico } from "./scripts/lexico.js";
-        import { Sintatico } from "./scripts/sintatico.js";
+    <!-- <textarea name="" id="inputArea" cols="30" rows="10"></textarea> -->
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="inputArea" class="materialize-textarea"></textarea>
+                    <label for="textarea1">Your text</label>
+                </div>
+            </div>
+        </form>
+    </div>
 
-        console.log("index.js");
+    <!-- <button id="buttonReproduce">reproduce</button> -->
 
-        function runLexico() {
-            console.log("iniciando teste");
-            var lexico = new Lexico();
-            // var tokens = lexico.analyze("meu gato pos um ovo");
-            var tokens = lexico.analyze(document.getElementById('inputArea').value);
+    <button id="buttonReproduce" class="btn waves-effect waves-light" type="submit" name="action">Submit
+    </button>
             
-            var sintatico = new Sintatico(tokens);
-            
-            sintatico.comecarAnalise();
-            
-            console.log(tokens);
-        }
-        </script> -->
 
 </body>
 

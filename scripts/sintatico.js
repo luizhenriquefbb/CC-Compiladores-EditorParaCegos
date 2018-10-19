@@ -15,7 +15,7 @@ export class Sintatico {
 
 
         // Guarda o ultimo erro gerado para exibir ao usuário
-        this.lastError = ''; 
+        this.lastError = {mensagem : '', local : {word : '', wordPosition: 0}}; 
 
         
     }
@@ -31,7 +31,7 @@ export class Sintatico {
             return this.current;
         }
 
-        this.lastError = "Erro: O programa terminou, mas a análise não";
+        this.lastError.mensagem = "Erro: O programa terminou, mas a análise não";
         // this.current = {'lex':['default']};
         // console.log('Tokens acabaram. Usando token auxiliar para testar epsilon');
         
@@ -63,11 +63,11 @@ export class Sintatico {
 
         if (!this.sentence()) {
             this.utils.printAndSpeek('Invalid Sentence');
-            this.utils.printAndSpeek(this.lastError);
-            return false;
+            this.utils.printAndSpeek(this.lastError.mensagem);
+            return {status: false, mensagem:this.lastError};
         } else {
             this.utils.printAndSpeek("Sentence ok");
-            return true;
+            return {status: true};
         }
 
 
@@ -89,6 +89,11 @@ export class Sintatico {
      * S = NP VP | VP
      */
     sentence() {
+
+        if (!this.current){
+            return false;
+        }
+        
         this.nounPhrase();
 
         if (!this.verbPhrase()) {
@@ -245,7 +250,8 @@ export class Sintatico {
         }
 
         
-        this.lastError = `expected a noum after '${this.current.word}' ( word number ${this.index+1} )`;
+        this.lastError.mensagem = `expected a noum before '${this.current.word}' ( word number ${this.index+1} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
 
@@ -262,7 +268,8 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError = `expected a verb after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a verb before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
 
@@ -279,7 +286,8 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError = `expected a determiner after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a determiner before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
 
@@ -297,7 +305,8 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError = `expected a preposition after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a preposition before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
 
@@ -309,7 +318,8 @@ export class Sintatico {
             this.next();
             return true;
         }
-        this.lastError = `expected a proper noum after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a proper before after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false
     }
 
@@ -326,7 +336,8 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError = `expected a pronoum after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a pronoum before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
 }

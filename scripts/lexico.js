@@ -37,7 +37,8 @@ export class Lexico {
         if(result == null){
             console.log("Word not found");
             this.utils.printAndSpeek(`The word ${str} was not found`);
-            throw(`The word ${str} was not found`);
+            // throw(`The word ${str} was not found`);
+            return false;
         }
         // se a palavra retornada for igual a palavra buscada
         if (result.word == str) {
@@ -149,6 +150,9 @@ export class Lexico {
 
                 // classificar:
                 lex = this.classify(token);
+                
+                if (lex == false )return {status:false, word: token};
+
 
                 // colocar na resposta
                 result.push(new Token(token, lex, line_count));
@@ -177,6 +181,6 @@ export class Lexico {
             }
         }
 
-        return result;
+        return{ status: true, result: result};
     }
 }

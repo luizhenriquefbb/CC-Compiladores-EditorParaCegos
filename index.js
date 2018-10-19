@@ -8,28 +8,56 @@ function runLexico() {
     var lexico = new Lexico();
 
     // pegar o texto completo
-    var txtCompleto = String(document.getElementById('inputArea').value);
+    var myInputArea = document.getElementById('inputArea');
+    var txtCompleto = String(myInputArea.value);
     var frases = txtCompleto.split(/[.!?]/);
 
     // separar em frases e analisar indivudalmente
     for (const frase of frases) {
-        
+
         // não precisa analisar tokens vazios
         if (frase == '') {
             continue;
         }
 
         // recolocar o '.' no final da frase para a gramática aceitar
-        var tokens = lexico.analyze(frase+'.');
-    
-        var sintatico = new Sintatico(tokens);
-    
+
+        var lexicoAnalise = lexico.analyze(frase + '.');
+
+        var lexicoTokens = lexicoAnalise.status == true ? lexicoAnalise.result : [];
+
+        var sintatico = new Sintatico(lexicoTokens);
+
+        var sintaticoAnalise = sintatico.comecarAnalise()
+
+
+
         // se alguma frase der errado, para a execução
-        if (sintatico.comecarAnalise() == false){
+        // selecionar a parte do texto que esta errada
+        if (!lexicoAnalise.status || !sintaticoAnalise.status) {
+            
+            // TODO: pegar a posicao inicial do token
+            let posicaoInicial = 0; // apenas para testar
+
+            // analise lexica deu certo entao a sintatica deu errado
+            if (lexicoAnalise.status) {
+                // TODO: pegar o incio da frase
+                let inicioFrase = 0; // apenas para testar
+
+                // setSelectionRange(myInputArea, posicaoInicial, posicaoInicial+sintaticoAnalise.mensagem.local.word.length );
+                setSelectionRange(myInputArea, posicaoInicial, inicioFrase + frase.length);
+
+            // lexica deu errado
+            } else {
+                setSelectionRange(myInputArea, posicaoInicial, posicaoInicial + lexicoAnalise.word.length);
+            }
+
+
+            // parar a execução do for
             break;
         }
-    
-        console.log(tokens);
+
+        console.log(lexicoTokens);
     }
 
 }
