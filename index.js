@@ -13,7 +13,10 @@ function runLexico() {
     var frases = txtCompleto.split(/[.!?]/);
 
     // separar em frases e analisar indivudalmente
-    for (const frase of frases) {
+    // for (const frase of frases) {
+    for (var cont = 0; cont<frases.length;cont++){
+        var frase = frases[cont];
+    
 
         // não precisa analisar tokens vazios
         if (frase == '') {
@@ -35,20 +38,21 @@ function runLexico() {
         // se alguma frase der errado, para a execução
         // selecionar a parte do texto que esta errada
         if (!lexicoAnalise.status || !sintaticoAnalise.status) {
-            
-            // TODO: pegar a posicao inicial do token
-            let posicaoInicial = 0; // apenas para testar
 
             // analise lexica deu certo entao a sintatica deu errado
             if (lexicoAnalise.status) {
-                // TODO: pegar o incio da frase
-                let inicioFrase = 0; // apenas para testar
+                // pegar o incio da frase
+                let inicioFrase = encontrarInicioDaFrase(frases, cont); // apenas para testar
 
-                // setSelectionRange(myInputArea, posicaoInicial, posicaoInicial+sintaticoAnalise.mensagem.local.word.length );
-                setSelectionRange(myInputArea, posicaoInicial, inicioFrase + frase.length);
+                // selecionar a frase toda
+                setSelectionRange(myInputArea, inicioFrase, inicioFrase + frase.length);
 
             // lexica deu errado
             } else {
+                // pegar a posicao inicial do token
+                let posicaoInicial = encontrarIncioDoToken(lexicoAnalise.word, frases, cont); // apenas para testar
+
+                // selecionar palavra errada
                 setSelectionRange(myInputArea, posicaoInicial, posicaoInicial + lexicoAnalise.word.length);
             }
 
@@ -87,9 +91,45 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
 
 /**
  * Função para testar setSelectionRange
+ * @deprecated
  */
 function select() {
     setSelectionRange(document.getElementById('inputArea'), 0, 3);
 }
 
 // document.getElementById("buttonReproduce").onclick = select;
+
+/**
+ * Para selecionar uma substring no div de entrada, é preciso conhecer onde a
+ * frase começa.
+ * @param {Array} frases conjunto de frases em array
+ * @param {Number} numeroFrase a frase específica
+ * @return {Number} caractere no qual a frase começa
+ */
+function encontrarInicioDaFrase(frases, numeroFrase) {
+    var posicaoInicial = 0;
+    for (var cont = 0; cont < frases.length && cont < numeroFrase; cont++) {
+        var frase = frases[cont];
+    
+        //+1 por causa do '.'
+        posicaoInicial+= frase.length+1;
+    }
+
+    return posicaoInicial;
+}
+
+function encontrarIncioDoToken(token, frases, numeroFrase){
+    var posicaoInicial = 0;
+    // frases anteriores
+    for (var cont = 0; cont < frases.length && cont < numeroFrase; cont++) {
+        var frase = frases[cont];
+
+        //+1 por causa do '.'
+        posicaoInicial+= frase.length+1;
+    }
+
+    // na frase onde aconteceu o problema
+    posicaoInicial += frases[numeroFrase].indexOf(token);
+
+    return posicaoInicial;
+}

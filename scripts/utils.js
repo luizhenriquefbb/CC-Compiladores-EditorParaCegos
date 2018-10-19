@@ -5,9 +5,11 @@ class Utils{
     }
 
     printAndSpeek(str){
+        if (str == ''){
+            return;
+        }
         console.log(str);
         responsiveVoice.speak(str);
-        
     }
 }
 

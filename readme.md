@@ -75,6 +75,7 @@ Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
 
 - Não reconhece **adjetivos**.
 - Precisa que a frase seja escrita por completo para só então começar a análise pois estamos usando uma API para classificar as palavras (parte léxica), e esta é um pouco lenta (uma requisição por palavra). Entã a melhor maneira é apenas começar  análise depois que o texto for escrito.
+- A frase precisa terminar com ponto final ('.')
 
 ## TODO:
 - Análise semântica
@@ -83,9 +84,5 @@ Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
 - Rever uma parte da grmática
     - A frase `'I like dogs'` não funciona, mas `'I like the dogs'` sim.
 
-- Selecionar parte do texto onde o erro aconteceu
-    - Para completar essa tarefa precisa:
-        - Pegar a posicao inicial do token
-        - Pegar o incio da frase
 
 
