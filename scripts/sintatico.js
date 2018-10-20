@@ -219,6 +219,9 @@ export class Sintatico {
             if (this.nominal())
                 return true;
         }
+        else if (this.nominal()) {
+            return true;
+        }
         return false;
     }
 

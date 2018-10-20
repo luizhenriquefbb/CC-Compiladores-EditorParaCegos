@@ -38,6 +38,7 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
         | Proper_noun
         | Determinant Adj Nominal
 
+[Explicações sobre a gramática utilizada](https://web.stanford.edu/~jurafsky/slp3/10.pdf)
     Nominal -> Noun Nominal2
 
     Nominal2 -> PP Nominal2
