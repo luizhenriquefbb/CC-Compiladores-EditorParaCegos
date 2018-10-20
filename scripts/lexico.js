@@ -36,7 +36,7 @@ export class Lexico {
         var result = this.dicionario.queryWord(str);
         if(result == null){
             console.log("Word not found");
-            this.utils.printAndSpeek(`The word ${str} was not found`);
+            this.utils.printAndSpeak(`The word ${str} was not found`);
             // throw(`The word ${str} was not found`);
             return false;
         }
@@ -52,7 +52,7 @@ export class Lexico {
                     else if (x == this.dicionario.NOUN)
                         classifications.push({ "classificacao": x, "isPlural": false });
                     
-                    else if (x == this.dicionario.PRONOUM)
+                    else if (x == this.dicionario.PRONOUN)
                         classifications.push({ "classificacao": x, "personNumber": result.meaning[x] });
                     
                     else if(x == this.dicionario.AUXILIAR){

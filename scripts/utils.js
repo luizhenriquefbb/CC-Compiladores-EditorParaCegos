@@ -4,7 +4,7 @@ class Utils{
         
     }
 
-    printAndSpeek(str){
+    printAndSpeak(str){
         if (str == ''){
             return;
         }

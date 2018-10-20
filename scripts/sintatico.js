@@ -9,17 +9,17 @@ export class Sintatico {
         this.list_tokens = list_tokens;  //lista de tokens
         this.index = 0;      //índice do token atual
         this.current = this.list_tokens[0];    //token atual
-        
-        
+
+
         this.utils = utils;
         this.dicionario = new Dicionario();
 
 
         // Guarda o ultimo erro gerado para exibir ao usuário
-        this.lastError = {mensagem : '', local : {word : '', wordPosition: 0}}; 
+        this.lastError = { mensagem: '', local: { word: '', wordPosition: 0 } };
         this.personNumber = new MyStack();
 
-        
+
     }
 
     /**
@@ -36,7 +36,7 @@ export class Sintatico {
         this.lastError.mensagem = "Erro: O programa terminou, mas a análise não";
         // this.current = {'lex':['default']};
         // console.log('Tokens acabaram. Usando token auxiliar para testar epsilon');
-        
+
         throw ("Erro: O programa terminou, mas a análise não");    // caso chegue ao fim da lista sem terminar o programa
         // return null;
     }
@@ -62,14 +62,24 @@ export class Sintatico {
     comecarAnalise() {
         console.log("Iniciando analise");
 
+        // checando se tem palavra duplicada
+        for (let i = 0; i < this.list_tokens.length - 1; i++) {
+            if (this.list_tokens[i].word == this.list_tokens[i + 1].word) {
+                this.utils.printAndSpeak('Invalid Sentence');
+                this.lastError.mensagem = `Word ${this.list_tokens[i].word} duplicated`
+                this.utils.printAndSpeak(this.lastError.mensagem);
+                return { status: false, mensagem: this.lastError };
+            }
+
+        }
 
         if (!this.sentence()) {
-            this.utils.printAndSpeek('Invalid Sentence');
-            this.utils.printAndSpeek(this.lastError.mensagem);
-            return {status: false, mensagem:this.lastError};
+            this.utils.printAndSpeak('Invalid Sentence');
+            this.utils.printAndSpeak(this.lastError.mensagem);
+            return { status: false, mensagem: this.lastError };
         } else {
-            this.utils.printAndSpeek("Sentence ok");
-            return {status: true};
+            this.utils.printAndSpeak("Sentence ok");
+            return { status: true };
         }
 
 
@@ -88,15 +98,17 @@ export class Sintatico {
 
 
     /**
-     * S = NP VP | VP
+     * S -> Aux NP VP
+          | NP VP
+          | VP
      */
     sentence() {
 
-        if (!this.current){
+        if (!this.current) {
             return false;
         }
-        
-        if(this.nounPhrase())
+
+        if (this.nounPhrase())
             this.personNumber.push(this.list_tokens[this.index - 1]);
 
 
@@ -104,24 +116,24 @@ export class Sintatico {
             return false;
         }
 
-        if (['.','!','?'].includes(this.current.word))
+        if (['.', '!', '?'].includes(this.current.word))
             return true;
         else
             return false;
-        
+
     }
 
     /**
-     * VP = verb verbPhrase_2
-     * | verb NP verbPhrase_2
-     * | verb NP PP verbPhrase_2
-     * | verb PP verbPhrase_2
-     * | Aux verb
+     * VP -> Aux Verb Adv VP2
+           | Verb VP2
+           | Verb NP VP2
+           | Verb NP PP VP2
+           | Verb PP VP2
      */
     verbPhrase() {
 
 
-        if (!this.isAux() && this.isVerb()) {
+        if (!this.isAuxiliar() && this.isVerb()) {
 
             this.personNumber.push(this.list_tokens[this.index - 1])
             var message = this.personNumber.reduz_pessoa();
@@ -153,7 +165,7 @@ export class Sintatico {
         }
 
 
-        else if (this.isAux()) {
+        else if (this.isAuxiliar()) {
             this.next();
             this.personNumber.push(this.list_tokens[this.index - 1])
             var message = this.personNumber.reduz_pessoa();
@@ -163,6 +175,7 @@ export class Sintatico {
             }
             if (!this.isVerb())
                 return false;
+            this.isAdverb();
             if (!this.verbPhrase_2())
                 return false;
 
@@ -178,40 +191,42 @@ export class Sintatico {
     /**
      * Retirando a recursividade a esquerda do método verbPhrase
      * 
-     * verbPhrase_2 = PP VP_2 
-     * | ε
+     *     VP2 -> PP VP2
+     *          | ε
      */
     verbPhrase_2() {
-        if (this.preposition()){
+        if (this.preposition()) {
             return this.verbPhrase_2();
         }
-        else{
-            return true ; // epsilon
+        else {
+            return true; // epsilon
         }
     }
 
     /**
-     * NP = pronoum 
-     * | proper_noum 
-     * | DET NOMINAL
+     * NP -> Pronoun
+           | Proper_noun
+           | Determinant Adj Nominal
      */
     nounPhrase() {
-        if(this.isPronoun())
+        if (this.isPronoun())
             return true;
-        else if(this.isProperNoun())
+        else if (this.isProperNoun())
             return true;
-        else if(this.isDeterminer()){
-            if(this.nominal())
+        else if (this.isDeterminer()) {
+
+            this.isAdjective();
+            if (this.nominal())
                 return true;
         }
         return false;
     }
 
     /**
-     * NOMINAL = noun NOMINAL_2 |
+     * Nominal -> Noun Nominal2
      */
     nominal() {
-        if (this.isNoun()){
+        if (this.isNoun()) {
             if (this.nominal_2())
                 return true;
         }
@@ -221,9 +236,9 @@ export class Sintatico {
     /**
      * Tratando a recursividade a esquerda do método nominal()
      * 
-     * NOMINAL_2 = noun NOMINAL_2 
-     * | PP NOMINAL_2 
-     * | ε
+     * Nominal2 -> PP Nominal2
+                 | Noun Nominal2
+                 | ε
      */
     nominal_2() {
 
@@ -232,7 +247,7 @@ export class Sintatico {
                 return true;
             return false;
         }
-        else if(this.preposition()){
+        else if (this.preposition()) {
             if (this.nominal_2())
                 return true;
             return false;
@@ -241,12 +256,12 @@ export class Sintatico {
     }
 
     /**
-     * PP = preposition NP
+     * PP -> Preposition NP
      */
     preposition() {
-        if(this.isPreposition()){
+        if (this.isPreposition()) {
             // this.next();
-            if(this.nounPhrase())
+            if (this.nounPhrase())
                 return true;
         }
         return false;
@@ -270,58 +285,77 @@ export class Sintatico {
 
 
         var retorno = false;
-        this.current.lex.map( (x) => {
-            if(x.classificacao == this.dicionario.NOUN)
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.NOUN)
                 retorno = true;
-            }
+        }
         );
-        if(retorno){
+        if (retorno) {
             this.current['usedClassification'] = this.dicionario.NOUN;
             this.next();
             return true;
         }
 
-        
-        this.lastError.mensagem = `expected a noum before '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+
+        this.lastError.mensagem = `expected a 'noun' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
 
     isVerb() {
 
         var retorno = false;
-        this.current.lex.map( (x) => {
-            if(x.classificacao == this.dicionario.VERB)
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.VERB)
                 retorno = true;
-            }
+        }
         );
-        if(retorno){
+        if (retorno) {
             this.current['usedClassification'] = this.dicionario.VERB;
             this.next();
             return true;
         }
 
-        this.lastError.mensagem = `expected a verb before '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        this.lastError.mensagem = `expected a 'verb' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
+        return false;
+    }
+
+    isAdverb() {
+
+        var retorno = false;
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.ADVERB)
+                retorno = true;
+        }
+        );
+        if (retorno) {
+            this.current['usedClassification'] = this.dicionario.ADVERB;
+            this.next();
+            return true;
+        }
+
+        this.lastError.mensagem = `expected a 'adverb' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
 
     isDeterminer() {
 
         var retorno = false;
-        this.current.lex.map( (x) => {
-            if(x.classificacao == this.dicionario.DETERMINER)
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.DETERMINER)
                 retorno = true;
-            }
+        }
         );
-        if(retorno){
-            this.current['usedClassification'] = this.dicionario.DETERMINER;            
+        if (retorno) {
+            this.current['usedClassification'] = this.dicionario.DETERMINER;
             this.next();
             return true;
         }
 
-        this.lastError.mensagem = `expected a determiner before '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        this.lastError.mensagem = `expected a 'determiner' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
 
@@ -329,19 +363,19 @@ export class Sintatico {
     isPreposition() {
 
         var retorno = false;
-        this.current.lex.map( (x) => {
-            if(x.classificacao == this.dicionario.PREPOSITION)
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.PREPOSITION)
                 retorno = true;
-            }
+        }
         );
-        if(retorno){
+        if (retorno) {
             this.current['usedClassification'] = this.dicionario.PREPOSITION;
             this.next();
             return true;
         }
 
-        this.lastError.mensagem = `expected a preposition before '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        this.lastError.mensagem = `expected a 'preposition' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
 
@@ -349,61 +383,80 @@ export class Sintatico {
      * Tratando substantivos próprios apenas verificando se a palavra começa com letra maiúscula
      */
     isProperNoun() {
-        if(this.current.lex[0].classificacao == this.dicionario.PROPER_NOUN){
+        if (this.current.lex[0].classificacao == this.dicionario.PROPER_NOUN) {
             this.current['usedClassification'] = this.dicionario.PROPER_NOUN;
             this.next();
             return true;
         }
-        this.lastError.mensagem = `expected a proper before after '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        this.lastError.mensagem = `expected a 'proper-noun' before after '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false
     }
 
-    isPronoun(){
+    isPronoun() {
 
         var retorno = false;
-        this.current.lex.map( (x) => {
-            if(x.classificacao == this.dicionario.PRONOUM)
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.PRONOUN)
                 retorno = true;
-            }
+        }
         );
-        if(retorno){
-            this.current['usedClassification'] = this.dicionario.PRONOUM;
+        if (retorno) {
+            this.current['usedClassification'] = this.dicionario.PRONOUN;
             this.next();
             return true;
         }
 
-        this.lastError.mensagem = `expected a pronoum before '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        this.lastError.mensagem = `expected a 'pronoum' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
+        return false;
+    }
+
+    isAdjective() {
+
+        var retorno = false;
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.ADJECTIVE)
+                retorno = true;
+        }
+        );
+        if (retorno) {
+            this.current['usedClassification'] = this.dicionario.ADJECTIVE;
+            this.next();
+            return true;
+        }
+
+        this.lastError.mensagem = `expected an 'adjective' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
 
     /**
      * verificar se é um verbo aux: (look ahead vendo se tem dois verbos seguidos)
      */
-    isAux(){
+    isAuxiliar() {
         var retorno = false;
 
         // ve se PODE ser auxiliar
-        this.current.lex.map( (x) => {
-            if(x.classificacaoDetalhada == this.dicionario.AUXILIAR ){
+        this.current.lex.map((x) => {
+            if (x.classificacaoDetalhada == this.dicionario.AUXILIAR) {
                 // verifica se o proximo é verbo
-                this.list_tokens[this.index+1].lex.map(y=>{
-                    if(y.classificacao == this.dicionario.VERB)
+                this.list_tokens[this.index + 1].lex.map(y => {
+                    if (y.classificacao == this.dicionario.VERB)
                         retorno = true;
                 });
             }
         });
 
-        if(retorno){
+        if (retorno) {
             this.current['usedClassification'] = this.dicionario.AUXILIAR;
             // this.next();
             return true;
         }
 
-        this.lastError.mensagem = `expected an auxiliar before '${this.current.word}' ( word number ${this.index+1} )`;
-        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        this.lastError.mensagem = `expected an 'auxiliar' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return retorno;
     }
-    
+
 }
