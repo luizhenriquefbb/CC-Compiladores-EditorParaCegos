@@ -88,11 +88,15 @@ export class MyStack {
     reduz_pessoa() {
         // verifica se a pilha tem ao menos 2 elementos para serem comparados
         if (this.pilha.length < 2) {
-            return { status: false, erro: "stack len is less than two" };
+            // return { status: false, erro: "stack len is less than two" };
+            return 'ok';
         }
 
         var topo = this.pilha[this.pilha.length - 1];
         var subTopo = this.pilha[this.pilha.length - 2];
+
+        console.log('topo',topo );
+        console.log('subTopo',subTopo );
 
         // pegar o 'numero' do topo
         var topoPessoaNumero = [];
@@ -104,6 +108,11 @@ export class MyStack {
                         topoPessoaNumero.push({"person":y.person,"number":y.number});
                     });
                 }
+            }
+            else if(x['personNumber']){
+                x['personNumber'].map(y=>{
+                    subTopoPessoaNumero.push({"person":y.person,"number":y.number});
+                });
             }
             else if (x["isPlural"] == false) {
                 topoPessoaNumero.push({"person":'all',"number":'singular'});
@@ -121,6 +130,13 @@ export class MyStack {
                 x['personNumber'].map(y=>{
                     subTopoPessoaNumero.push({"person":y.person,"number":y.number});
                 });
+            }   
+            else if(x["classificacaoDetalhada"] == this.Dicionario.AUXILIAR){
+                if(x['personTenseNumber']){
+                    x['personTenseNumber'].map(y=>{
+                        topoPessoaNumero.push({"person":y.person,"number":y.number});
+                    });
+                }
             }
             //outros NP's (nome proprio ou substantivo)
             else if (x["isPlural"] == false) {

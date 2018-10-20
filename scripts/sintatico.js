@@ -96,8 +96,8 @@ export class Sintatico {
             return false;
         }
         
-        this.nounPhrase();
-        this.personNumber.push(this.list_tokens[this.index - 1]);
+        if(this.nounPhrase())
+            this.personNumber.push(this.list_tokens[this.index - 1]);
 
 
         if (!this.verbPhrase()) {
@@ -116,49 +116,67 @@ export class Sintatico {
      * | verb NP verbPhrase_2
      * | verb NP PP verbPhrase_2
      * | verb PP verbPhrase_2
-     * | verbPhrase_2
+     * | Aux verb
      */
     verbPhrase() {
-        if (this.isVerb()){
+
+
+        if (!this.isAux() && this.isVerb()) {
+
             this.personNumber.push(this.list_tokens[this.index - 1])
             var message = this.personNumber.reduz_pessoa();
-            if(message != 'ok'){
+            if (message != 'ok') {
                 this.lastError.mensagem = message;
                 return false;
             }
-            if(this.nounPhrase()){
+            if (this.nounPhrase()) {
                 this.preposition();
-                if(!this.verbPhrase_2())
+                if (!this.verbPhrase_2())
                     return false;
 
                 return true;
             }
-            else if(this.preposition()){
-                if(!this.verbPhrase_2())
+            else if (this.preposition()) {
+                if (!this.verbPhrase_2())
                     return false;
                 return true;
             }
-            else if(this.verbPhrase_2()){
+            else if (this.verbPhrase_2()) {
                 return true;
             }
-            else{
-                if(!this.verbPhrase_2())
+            else {
+                if (!this.verbPhrase_2())
                     return false;
-                
+
                 return true; //apenas verbo
-            }  
+            }
+        }
+
+
+        else if (this.isAux()) {
+            this.next();
+            this.personNumber.push(this.list_tokens[this.index - 1])
+            var message = this.personNumber.reduz_pessoa();
+            if (message != 'ok') {
+                this.lastError.mensagem = message;
+                return false;
+            }
+            if (!this.isVerb())
+                return false;
+            return true;
 
         }
-        else{
-            return this.verbPhrase_2();
+        else {
+            return false;
         }
-       
+
     }
 
     /**
      * Retirando a recursividade a esquerda do método verbPhrase
      * 
-     * verbPhrase_2 = PP VP_2 | ε
+     * verbPhrase_2 = PP VP_2 
+     * | ε
      */
     verbPhrase_2() {
         if (this.preposition()){
@@ -202,7 +220,7 @@ export class Sintatico {
      * 
      * NOMINAL_2 = noun NOMINAL_2 
      * | PP NOMINAL_2 
-     * | vazio
+     * | ε
      */
     nominal_2() {
 
@@ -255,6 +273,7 @@ export class Sintatico {
             }
         );
         if(retorno){
+            this.current['usedClassification'] = this.dicionario.NOUN;
             this.next();
             return true;
         }
@@ -274,6 +293,7 @@ export class Sintatico {
             }
         );
         if(retorno){
+            this.current['usedClassification'] = this.dicionario.VERB;
             this.next();
             return true;
         }
@@ -292,6 +312,7 @@ export class Sintatico {
             }
         );
         if(retorno){
+            this.current['usedClassification'] = this.dicionario.DETERMINER;            
             this.next();
             return true;
         }
@@ -311,6 +332,7 @@ export class Sintatico {
             }
         );
         if(retorno){
+            this.current['usedClassification'] = this.dicionario.PREPOSITION;
             this.next();
             return true;
         }
@@ -325,6 +347,7 @@ export class Sintatico {
      */
     isProperNoun() {
         if(this.current.lex[0].classificacao == this.dicionario.PROPER_NOUN){
+            this.current['usedClassification'] = this.dicionario.PROPER_NOUN;
             this.next();
             return true;
         }
@@ -342,6 +365,7 @@ export class Sintatico {
             }
         );
         if(retorno){
+            this.current['usedClassification'] = this.dicionario.PRONOUM;
             this.next();
             return true;
         }
@@ -350,4 +374,33 @@ export class Sintatico {
         this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
+
+    /**
+     * verificar se é um verbo aux: (look ahead vendo se tem dois verbos seguidos)
+     */
+    isAux(){
+        var retorno = false;
+
+        // ve se PODE ser auxiliar
+        this.current.lex.map( (x) => {
+            if(x.classificacaoDetalhada == this.dicionario.AUXILIAR ){
+                // verifica se o proximo é verbo
+                this.list_tokens[this.index+1].lex.map(y=>{
+                    if(y.classificacao == this.dicionario.VERB)
+                        retorno = true;
+                });
+            }
+        });
+
+        if(retorno){
+            this.current['usedClassification'] = this.dicionario.AUXILIAR;
+            // this.next();
+            return true;
+        }
+
+        this.lastError.mensagem = `expected an auxiliar before '${this.current.word}' ( word number ${this.index+1} )`;
+        this.lastError.local = {word : this.current.word, wordPosition: this.index};
+        return retorno;
+    }
+    
 }

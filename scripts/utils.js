@@ -9,9 +9,9 @@ class Utils{
             return;
         }
         console.log(str);
-        do{
-            responsiveVoice.speak(str);
-        }while(!confirm("Did you understand?"));
+        // do{
+        responsiveVoice.speak(str);
+        // }while(!confirm("Did you understand?"));
     }
     
     /**

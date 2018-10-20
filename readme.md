@@ -30,39 +30,24 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
 1 | 2
 ------ | --
+S | Aux NP VP
 S | NP VP
-VP | W V
-VP | W V NP
-NP | N
-NP | Det N
+S | VP
+NP | pronoun
+NP | proper_noun
+NP | determinant NOMINAL
+NOMINAL | noun NOMINAL2
+NOMINAL2 | PP NOMINAL2
+NOMINAL2 | noun NOMINAL2
+NOMINAL2 | ε
+VP | verb VP2
+VP | verb NP VP2
+VP | verb NP PP VP2
+VP | verb PP VP2
+VP2 | PP VP2
+VP2 | ε
 
-W | will
-W | ε
-
-
-onde
-
-
-    S == [Sentence]
-        ex: John likes Sarah’s black hair
-
-    N == [Noun]
-        ex: John, hair
-
-    V == [Verb]
-        ex: eating, sat
-
-    Adj == [Adjective]
-        ex: black, long
-
-    Det == [Determiner]
-        ex: the, a, every
-
-    NP == [Noun Phrase]
-        ex: Sarah’s long black hair
-
-    VP == [Verb Phrase]
-        ex: eating apples -->
+ -->
 
 ## Gramática
 
@@ -78,11 +63,19 @@ Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
 - A frase precisa terminar com ponto final ('.')
 
 ## TODO:
-- Análise semântica
-    - Colocar no sintatico, pontos chaves que avaliam a semântica da frase
 
 - Rever uma parte da grmática
     - A frase `'I like dogs'` não funciona, mas `'I like the dogs'` sim.
+
+- Teste automatico para as frases
+    - it is raining
+    - the book is on the table
+    - the dog are sleeping
+    - the dog is sleeping
+    - the dogs are sleeping
+    - the dogs is sleeping
+
+- Reescrever gramática no README
 
 
 
