@@ -17,6 +17,8 @@
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
     <!-- jQuery -->
     <script src="scripts/libs/jquery-1.9.1.min.js"></script>
+    <!-- knockout -->
+    <script src="scripts/libs/knockout-3.4.2.js"></script>
 
 
     <!-- main script -->
@@ -44,6 +46,19 @@
 
     <button id="buttonReproduce" class="btn waves-effect waves-light" type="submit" name="action">Submit
     </button>
+
+
+    <!-- div de debugs -->
+    <div class="row debugs">
+        <div class="col 12">
+            <div class="row" data-bind="foreach: $data">
+                <span data-bind="text: $data.word"></span>
+                <span data-bind="text: $data.usedClassification"></span>
+            </div>
+        </div>
+    </div>
+    
+    
             
 
 </body>

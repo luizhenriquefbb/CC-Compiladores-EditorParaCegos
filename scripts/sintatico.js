@@ -163,6 +163,9 @@ export class Sintatico {
             }
             if (!this.isVerb())
                 return false;
+            if (!this.verbPhrase_2())
+                return false;
+
             return true;
 
         }
