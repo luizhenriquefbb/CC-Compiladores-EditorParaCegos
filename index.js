@@ -7,7 +7,7 @@ console.log("index.js");
 // welcome sppech
 // utils.printAndSpeek2("welcome, whenever I say, you can repeat me by pressing 'esc' or continue by pressing 'enter'");
 
-var lexicoTokens = [];
+
 
 function runLexico() {
     console.log("iniciando teste");
@@ -19,6 +19,8 @@ function runLexico() {
     var frases = txtCompleto.split(/[.!?]/);
 
     
+    
+
 
     // separar em frases e analisar indivudalmente
     // for (const frase of frases) {
@@ -35,7 +37,7 @@ function runLexico() {
 
         var lexicoAnalise = lexico.analyze(frase + '.');
 
-        lexicoTokens = lexicoAnalise.status == true ? lexicoAnalise.result : [];
+        var lexicoTokens = lexicoAnalise.status == true ? lexicoAnalise.result : [];
 
         var sintatico = new Sintatico(lexicoTokens);
 
@@ -75,8 +77,6 @@ function runLexico() {
    
 }
 
-
-ko.applyBindings(lexicoTokens);
 
 
 

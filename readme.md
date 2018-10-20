@@ -20,6 +20,7 @@ Aluno | Matrícula
 Luiz Henrique | 11514334
 Aline Moura | 
 Alisson Galiza | 11408126
+Rhenan Carvalho |
 
 
 # Sobre o projeto:
@@ -33,26 +34,31 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 S -> Aux NP VP
    | NP VP
    | VP
+
 NP -> Pronoun
     | Proper_noun
-    | Determinant Nominal
+    | Determinant Adj Nominal
+    | Nominal
+
 Nominal -> Noun Nominal2
+
 Nominal2 -> PP Nominal2
           | Noun Nominal2
           | ε
-VP -> Aux Verb VP2
+
+VP -> Aux Verb Adv VP2
     | Verb VP2
-    | Verb Adj VP2
     | Verb NP VP2
     | Verb NP PP VP2
     | Verb PP VP2
+
 VP2 -> PP VP2
      | ε
 
 
 ## Gramática
 
-[Explicações sobre a gramática utilizada](https://web.stanford.edu/~jurafsky/slp3/11.pdf)
+[Explicações sobre a gramática utilizada](https://web.stanford.edu/~jurafsky/slp3/10.pdf)
 
 ![](gramatica.png)
 

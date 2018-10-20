@@ -14,6 +14,8 @@ export class Dicionario {
         this.PREPOSITION = "preposition";
         this.AUXILIAR = "auxiliar verb"
         this.PRONOUM = 'pronoum';
+        this.ADJECTIVE = 'adjective';
+        this.ADVERB = 'adverb';
         this.PROPER_NOUN = 'proper noun'
         // this.ADVERB = 'TODO';
         
@@ -335,6 +337,100 @@ export class Dicionario {
                         ]
                     }
                 };
+            case 'like':
+                return {
+                    "word": "like",
+                    "phonetic": [
+                        "lʌɪk"
+                    ],
+                    "meaning": {
+                        "verb":[],
+                        "preposition": [
+                            {
+                                "definition": "having the same characteristics or qualities as; similar to.",
+                                "example": "he used to have a car like mine",
+                                "synonyms": [
+                                    "similar to",
+                                    "the same as",
+                                    "identical to"
+                                ]
+                            },
+                            {
+                                "definition": "used to draw attention to the nature of an action or event.",
+                                "example": "I apologize for coming over unannounced like this"
+                            },
+                            {
+                                "definition": "such as; for example.",
+                                "example": "the cautionary vision of works like Animal Farm and 1984",
+                                "synonyms": [
+                                    "such as",
+                                    "for example",
+                                    "for instance",
+                                    "in particular",
+                                    "as",
+                                    "namely",
+                                    "viz."
+                                ]
+                            }
+                        ],
+                        "conjunction": [
+                            {
+                                "definition": "in the same way that; as.",
+                                "example": "people who change countries like they change clothes"
+                            },
+                            {
+                                "definition": "as though; as if.",
+                                "example": "I felt like I'd been kicked by a camel"
+                            }
+                        ],
+                        "noun": [
+                            {
+                                "definition": "used with reference to a person or thing of the same kind as another.",
+                                "example": "the quotations could be arranged to put like with like"
+                            }
+                        ],
+                        "adjective": [
+                            {
+                                "definition": "(of a person or thing) having similar qualities or characteristics to another person or thing.",
+                                "example": "I responded in like manner",
+                                "synonyms": [
+                                    "similar",
+                                    "much the same",
+                                    "more or less the same",
+                                    "not unlike",
+                                    "comparable",
+                                    "corresponding",
+                                    "correspondent",
+                                    "resembling",
+                                    "alike",
+                                    "approximating",
+                                    "analogous",
+                                    "parallel",
+                                    "equivalent",
+                                    "cognate",
+                                    "related",
+                                    "of a kind",
+                                    "akin",
+                                    "kindred"
+                                ]
+                            }
+                        ],
+                        "adverb": [
+                            {
+                                "definition": "used in speech as a meaningless filler or to signify the speaker's uncertainty about an expression just used.",
+                                "example": "there was this funny smell—sort of dusty like"
+                            },
+                            {
+                                "definition": "used to convey a person's reported attitude or feelings in the form of direct speech (whether or not representing an actual quotation).",
+                                "example": "so she comes into the room and she's like ‘Where is everybody?’"
+                            },
+                            {
+                                "definition": "in the manner of.",
+                                "example": "like as a ship with dreadful storm long tossed"
+                            }
+                        ]
+                    }
+                }
             case 'is':
                 // "third person singular present of be."
                 return {
