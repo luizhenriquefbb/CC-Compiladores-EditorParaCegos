@@ -97,7 +97,7 @@ export class Sintatico {
         }
         
         this.nounPhrase();
-        this.personNumber.push(this.list_tokens[this.index - 1])
+        this.personNumber.push(this.list_tokens[this.index - 1]);
 
 
         if (!this.verbPhrase()) {
@@ -278,7 +278,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a verb before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a verb before '${this.current.word}' ( word number ${this.index+1} )`;
         this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
@@ -296,7 +296,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a determiner before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a determiner before '${this.current.word}' ( word number ${this.index+1} )`;
         this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
@@ -315,7 +315,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a preposition before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a preposition before '${this.current.word}' ( word number ${this.index+1} )`;
         this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }
@@ -328,7 +328,7 @@ export class Sintatico {
             this.next();
             return true;
         }
-        this.lastError.mensagem = `expected a proper before after '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a proper before after '${this.current.word}' ( word number ${this.index+1} )`;
         this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false
     }
@@ -346,7 +346,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a pronoum before '${this.current.word}' ( word number ${this.index} )`;
+        this.lastError.mensagem = `expected a pronoum before '${this.current.word}' ( word number ${this.index+1} )`;
         this.lastError.local = {word : this.current.word, wordPosition: this.index};
         return false;
     }

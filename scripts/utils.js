@@ -9,9 +9,23 @@ class Utils{
             return;
         }
         console.log(str);
+        do{
+            responsiveVoice.speak(str);
+        }while(!confirm("Did you understand?"));
+    }
+    
+    /**
+     * Sem confirmação
+     * @param {*} str 
+     */
+    printAndSpeek2(str){
+        if (str == ''){
+            return;
+        }
+        console.log(str);
+        
         responsiveVoice.speak(str);
-        // do{
-        // }while(!confirm("Did you understand?"));
+        
     }
 }
 

@@ -1,7 +1,11 @@
 import { Lexico } from "./scripts/lexico.js";
 import { Sintatico } from "./scripts/sintatico.js";
+import { utils } from "./scripts/utils.js";
 
 console.log("index.js");
+
+// welcome sppech
+utils.printAndSpeek2("welcome, whenever I say, you can repeat me by pressing esc or continue by pressing enter");
 
 function runLexico() {
     console.log("iniciando teste");

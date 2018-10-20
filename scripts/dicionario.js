@@ -15,7 +15,7 @@ export class Dicionario {
         this.AUXILIAR = "auxiliar verb"
         this.PRONOUM = 'pronoum';
         this.PROPER_NOUN = 'proper noun'
-        this.ADVERB = 'TODO';
+        // this.ADVERB = 'TODO';
         
     }
 
@@ -49,7 +49,7 @@ export class Dicionario {
     }
 
     /**
-     * Só para teste. Algumas palavra em memória. Usar método acima quando estiver em produção
+     * Algumas palavra em memória
      * @param {*} palavra 
      */
     queryWord(palavra) {
@@ -336,7 +336,7 @@ export class Dicionario {
                     }
                 };
             case 'is':
-// "third person singular present of be."
+                // "third person singular present of be."
                 return {
                     "word": "is",
                     "meaning": {
@@ -350,7 +350,7 @@ export class Dicionario {
                     }
                 };
             case 'are':
-// "second person singular present and first, second, third person plural present of be."
+                // "second person singular present and first, second, third person plural present of be."
                 return {
                     "word": "are",
                     "meaning": {
