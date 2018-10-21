@@ -212,7 +212,7 @@ export class Sintatico {
      * NP -> Pronoun
            | Proper_noun
            | Determinant Adj Nominal
-     */
+     */ 
     nounPhrase() {
         if (this.isPronoun())
             return true;
@@ -303,6 +303,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.NOUN;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -323,6 +324,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.VERB;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -342,6 +344,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.ADVERB;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -361,6 +364,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.DETERMINER;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -381,6 +385,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.PREPOSITION;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -396,6 +401,7 @@ export class Sintatico {
     isProperNoun() {
         if (this.current.lex[0].classificacao == this.dicionario.PROPER_NOUN) {
             this.current['usedClassification'] = this.dicionario.PROPER_NOUN;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -414,6 +420,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.PRONOUN;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -433,6 +440,7 @@ export class Sintatico {
         );
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.ADJECTIVE;
+            this.printCurrentOnView();
             this.next();
             return true;
         }
@@ -461,6 +469,7 @@ export class Sintatico {
 
         if (retorno) {
             this.current['usedClassification'] = this.dicionario.AUXILIAR;
+            this.printCurrentOnView();
             // this.next();
             return true;
         }
@@ -481,6 +490,10 @@ export class Sintatico {
             }
 
         }
+    }
+
+    printCurrentOnView(){
+        putOnLogView(`palavra: ${this.current.word}; ===>  classificação: ${this.current.usedClassification}`);
     }
 
 }

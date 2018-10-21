@@ -10,6 +10,11 @@ utils.printAndSpeak2("welcome. If you want me to repeat anything, just press 'es
 
 
 function runLexico() {
+
+    clearLogView();
+
+    toggleLoader();
+
     console.log("iniciando teste");
     var lexico = new Lexico();
 
@@ -70,10 +75,10 @@ function runLexico() {
             // parar a execução do for
             break;
         }
-
         console.log(lexicoTokens);
     }
-
+    
+    toggleLoader();
    
 }
 
@@ -100,16 +105,6 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
         range.select();
     }
 }
-
-/**
- * Função para testar setSelectionRange
- * @deprecated
- */
-function select() {
-    setSelectionRange(document.getElementById('inputArea'), 0, 3);
-}
-
-// document.getElementById("buttonReproduce").onclick = select;
 
 /**
  * Para selecionar uma substring no div de entrada, é preciso conhecer onde a
@@ -158,13 +153,8 @@ function encontrarIncioDoToken(token, frases, numeroFrase){
 // ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝       ╚═╝   ╚══════╝╚══════╝   ╚═╝   ╚══════╝╚══════╝
 //                                                                                       
 
-var putOnLogView = function(str){
-    var logs = document.getElementById("resultadoDosTestes");
+var logs = document.getElementById("resultadoDosTestes");
 
-    console.log(str);
-    logs.innerText += str;
-    logs.innerHTML += '<br>';
-}
 
 // botao de teste. Ele deve ser comekntado quando em produção
 document.getElementById("buttonTest").onclick = test;
@@ -173,6 +163,10 @@ document.getElementById("buttonTest").onclick = test;
  */
 function test() {
     
+    clearLogView();
+    toggleLoader();
+
+
     console.log("iniciando teste");
     var lexico = new Lexico();
 
@@ -184,6 +178,7 @@ function test() {
         "the book is on the table",
         "my cat put an egg",
         "I am tall",
+        "you are tall",
         "the dog are sleeping",
         "the dog is sleeping",
         "the dogs are sleeping",
@@ -222,7 +217,8 @@ function test() {
            putOnLogView("sucesso na frase: " + frase);
 
         }
-
+        
         console.log(lexicoTokens);
     }
+    toggleLoader();
 }
