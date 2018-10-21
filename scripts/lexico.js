@@ -49,8 +49,12 @@ export class Lexico {
                         classifications.push({ "classificacao": x, "tempoVerbal": "present", "isPlural":false });
 
                     // se a palvra retornada for substantivo, por fdefault, ela está em 'singular'
-                    else if (x == this.dicionario.NOUN)
-                        classifications.push({ "classificacao": x, "isPlural": false });
+                    else if (x == this.dicionario.NOUN){
+                        if(result.meaning[x][0].definition.includes("plural form of") || str.endsWith("s"))
+                            classifications.push({ "classificacao": x, "isPlural": true });
+                        else
+                            classifications.push({ "classificacao": x, "isPlural": false });
+                    }
                     
                     else if (x == this.dicionario.PRONOUN)
                         classifications.push({ "classificacao": x, "personNumber": result.meaning[x] });
@@ -91,9 +95,20 @@ export class Lexico {
                         classifications.push({ "classificacao": this.dicionario.NOUN, "isPlural": true });
                     }
 
-                    else if (definition.includes(this.dicionario.PAST)) {
+                    else if (definition.includes('past of')) {
                         // apenas verbo podem estar no passado
                         classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
+                    }
+                    //!!!!!!perigoso
+                    else if(str.endsWith("d")){
+                        console.log(`Verbo ${str} terminando em 'd', assumindo tempo verbal passado`);
+                        
+                        classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PAST });
+                    }
+                    else if(str.endsWith("ing")){
+                        console.log(`Verbo ${str} terminando em 'ing', assumindo tempo verbal presente`);
+                        
+                        classifications.push({ "classificacao": this.dicionario.VERB, "tempoVerbal": this.dicionario.PRESENT });
                     }
 
                     // default
@@ -156,9 +171,10 @@ export class Lexico {
                         break;
                 }
                 //nome proprio
-                if(token[0] != '.' && token != 'I' && token[0] === token[0].toUpperCase() )
-                    lex.push({ "classificacao": this.dicionario.PROPER_NOUN, "personNumber": [{person:'third', number:'singular'}] });
-                
+                if(token[0] != '.' && token != 'I' && token[0] === token[0].toUpperCase() ){
+                    lex = [{ "classificacao": this.dicionario.PROPER_NOUN, "personNumber": [{person:'third', number:'singular'}] }];
+                     
+                }
                 else
                     lex = this.classify(token);
                 
