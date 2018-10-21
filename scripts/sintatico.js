@@ -63,12 +63,12 @@ export class Sintatico {
         console.log("Iniciando analise");
 
         // checando se tem palavra duplicada
-        for (let i = 0; i < this.list_tokens.length; i++)  {
-            if  (this.list_tokens[i].word == this.list_tokens[i  +  1].word)  {
+        for (let i = 0; i < this.list_tokens.length - 1; i++) {
+            if (this.list_tokens[i].word == this.list_tokens[i + 1].word) {
                 this.utils.printAndSpeak('Invalid Sentence');
                 this.lastError.mensagem = `Word ${this.list_tokens[i].word} duplicated`
                 this.utils.printAndSpeak(this.lastError.mensagem);
-                return {  status: false, mensagem:  this.lastError  };
+                return { status: false, mensagem: this.lastError };
             }
 
         }
@@ -178,7 +178,7 @@ export class Sintatico {
                 return false;
 
             return true;
-
+            
         }
         else {
             return false;
@@ -398,12 +398,12 @@ export class Sintatico {
 
         var retorno = false;
         this.current.lex.map((x) => {
-            if (x.classificacao == this.dicionario.PRONOUM)
+            if (x.classificacao == this.dicionario.PRONOUN)
                 retorno = true;
         }
         );
         if (retorno) {
-            this.current['usedClassification'] = this.dicionario.PRONOUM;
+            this.current['usedClassification'] = this.dicionario.PRONOUN;
             this.next();
             return true;
         }

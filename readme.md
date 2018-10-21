@@ -27,40 +27,41 @@ Rhenan Carvalho |
 
 Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
-<!-- ## Gramática
-
-1 | 2
------- | --
-S -> Aux NP VP
-   | NP VP
-   | VP
-
-NP -> Pronoun
-    | Proper_noun
-    | Determinant Adj Nominal
-    | Nominal
-
-Nominal -> Noun Nominal2
-
-Nominal2 -> PP Nominal2
-          | Noun Nominal2
-          | ε
-
-VP -> Aux Verb Adv VP2
-    | Verb VP2
-    | Verb NP VP2
-    | Verb NP PP VP2
-    | Verb PP VP2
-
-VP2 -> PP VP2
-     | ε
-
-
 ## Gramática
+
+
+    S -> Aux NP VP
+    | NP VP
+    | VP
+
+    NP -> Pronoun
+        | Proper_noun
+        | Determinant Adj Nominal
+        | Nominal
+
+    Nominal -> Noun Nominal2
+
+    Nominal2 -> PP Nominal2
+            | Noun Nominal2
+            | ε
+
+    VP -> Aux Verb Adv VP2
+        | Verb VP2
+        | Verb NP VP2
+        | Verb NP PP VP2
+        | Verb PP VP2
+
+    VP2 -> PP VP2
+        | ε
+
+
+
+
+<!-- ## Gramática
 
 [Explicações sobre a gramática utilizada](https://web.stanford.edu/~jurafsky/slp3/10.pdf)
 
-![](gramatica.png)
+![](gramatica.png) -->
 
 ## Limitações
 Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
@@ -68,6 +69,7 @@ Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
 - Não reconhece **adjetivos**.
 - Precisa que a frase seja escrita por completo para só então começar a análise pois estamos usando uma API para classificar as palavras (parte léxica), e esta é um pouco lenta (uma requisição por palavra). Entã a melhor maneira é apenas começar  análise depois que o texto for escrito.
 - A frase precisa terminar com ponto final ('.')
+- Verbos no passado não são captados
 
 ## TODO:
 
@@ -81,8 +83,3 @@ Infelizmente, a gramática utlizada tem algumas limitações, entre elas:
     - the dog is sleeping
     - the dogs are sleeping
     - the dogs is sleeping
-
-- Reescrever gramática no README
-
-
-

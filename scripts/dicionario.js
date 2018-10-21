@@ -13,7 +13,7 @@ export class Dicionario {
         this.DETERMINER = "determiner";
         this.PREPOSITION = "preposition";
         this.AUXILIAR = "auxiliar verb"
-        this.PRONOUM = 'pronoum';
+        this.PRONOUN = 'pronoun';
         this.ADJECTIVE = 'adjective';
         this.ADVERB = 'adverb';
         this.PROPER_NOUN = 'proper noun'
@@ -493,7 +493,7 @@ export class Dicionario {
                 return {
                     "word": "I",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "first",
                                 "number":"singular"
@@ -505,7 +505,7 @@ export class Dicionario {
                 return {
                     "word": "you",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "second",
                                 "number":"singular"
@@ -521,7 +521,7 @@ export class Dicionario {
                 return {
                     "word": "he",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "third",
                                 "number":"singular"
@@ -533,7 +533,7 @@ export class Dicionario {
                 return {
                     "word": "she",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "third",
                                 "number":"singular"
@@ -545,7 +545,7 @@ export class Dicionario {
                 return {
                     "word": "it",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "third",
                                 "number":"singular"
@@ -557,7 +557,7 @@ export class Dicionario {
                 return {
                     "word": "we",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "first",
                                 "number":"plural"
@@ -569,7 +569,7 @@ export class Dicionario {
                 return {
                     "word": "they",
                     "meaning": {
-                        "pronoum": [
+                        "pronoun": [
                             {
                                 "person": "third",
                                 "number": "plural"
