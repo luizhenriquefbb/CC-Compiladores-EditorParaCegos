@@ -470,7 +470,52 @@ export class Dicionario {
                                 "person": "third",
                                 "number":"plural",
                                 "tense": "present"
+                            }
+
+                        ]
+                    }
+                };
+            case 'were':
+                // "second person singular past, plural past, and past subjunctive of be."
+                return {
+                    "word": "were",
+                    "meaning": {
+                        "auxiliar verb": [
+                            {
+                                "person": "second",
+                                "number":"singular",
+                                "tense": "past"
                             },
+                            {
+                                "person": "second",
+                                "number":"plural",
+                                "tense": "past"
+                            }
+
+                        ]
+                    }
+                };
+            case 'was':
+                // "second person singular past, plural past, and past subjunctive of be."
+                return {
+                    "word": "was",
+                    "meaning": {
+                        "auxiliar verb": [
+                            {
+                                "person": "first",
+                                "number":"singular",
+                                "tense": "past"
+                            },
+                            {
+                                "person": "third",
+                                "number":"singular",
+                                "tense": "past"
+                            },
+                            {
+                                "person": "third",
+                                "number":"plural",
+                                "tense": "past"
+                            }
 
                         ]
                     }

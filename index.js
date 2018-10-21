@@ -5,7 +5,7 @@ import { utils } from "./scripts/utils.js";
 console.log("index.js");
 
 // welcome sppech
-utils.printAndSpeek2("welcome, whenever I say, you can repeat me by pressing 'esc' or continue by pressing 'enter'");
+utils.printAndSpeak2("welcome. If you want me to repeat anything, just press 'esc' or continue by pressing 'enter'");
 
 
 

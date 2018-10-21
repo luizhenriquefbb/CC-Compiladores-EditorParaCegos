@@ -9,16 +9,16 @@ class Utils{
             return;
         }
         console.log(str);
-        do{
         responsiveVoice.speak(str);
-        }while(!confirm("Did you understand?"));
+        // do{
+        // }while(!confirm("Did you understand?"));
     }
     
     /**
      * Sem confirmação
      * @param {*} str 
      */
-    printAndSpeek2(str){
+    printAndSpeak2(str){
         if (str == ''){
             return;
         }
