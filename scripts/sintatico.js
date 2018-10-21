@@ -180,7 +180,7 @@ export class Sintatico {
                 return false;
 
             return true;
-
+            
         }
         else {
             return false;
