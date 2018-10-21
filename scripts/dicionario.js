@@ -17,7 +17,6 @@ export class Dicionario {
         this.ADJECTIVE = 'adjective';
         this.ADVERB = 'adverb';
         this.PROPER_NOUN = 'proper noun'
-        // this.ADVERB = 'TODO';
         
     }
 
@@ -252,12 +251,21 @@ export class Dicionario {
                             {
                                 "definition": "(of an actor) on stage."
                             }
-                        ],
-                        "noun": [
-                            {
-                                "definition": "the leg side."
-                            }
                         ]
+                        
+                    }
+                };
+            case 'in':
+                return {
+                    "word": "in",
+                    "phonetic": [
+                        "ɒn"
+                    ],
+                    "meaning": {
+                        "preposition": [],
+                        "adverb": [],
+                        "adjective":[]
+                        
                     }
                 };
             case 'table':
@@ -490,6 +498,11 @@ export class Dicionario {
                                 "person": "second",
                                 "number":"plural",
                                 "tense": "past"
+                            },
+                            {
+                                "person": "third",
+                                "number":"plural",
+                                "tense": "past"
                             }
 
                         ]
@@ -510,6 +523,26 @@ export class Dicionario {
                                 "person": "third",
                                 "number":"singular",
                                 "tense": "past"
+                            }
+
+                        ]
+                    }
+                };
+            case 'have':
+                // "second person singular past, plural past, and past subjunctive of be."
+                return {
+                    "word": "have",
+                    "meaning": {
+                        "auxiliar verb": [
+                            {
+                                "person": "first",
+                                "number":"singular",
+                                "tense": "past"
+                            },
+                            {
+                                "person": "second",
+                                "number":"singular",
+                                "tense": "past"
                             },
                             {
                                 "person": "third",
@@ -517,7 +550,24 @@ export class Dicionario {
                                 "tense": "past"
                             }
 
-                        ]
+                        ],
+                        "verb":[]
+                    }
+                };
+            case 'has':
+                // "second person singular past, plural past, and past subjunctive of be."
+                return {
+                    "word": "has",
+                    "meaning": {
+                        "auxiliar verb": [
+                            {
+                                "person": "third",
+                                "number":"singular",
+                                "tense": "past"
+                            }
+
+                        ],
+                        "verb":[]
                     }
                 };
 
