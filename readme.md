@@ -26,35 +26,34 @@ Rhenan Carvalho |
 # Sobre o projeto:
  
 Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
- 
+
 ## Gramática
- 
- 
-    S -> Aux NP VP
-       | NP VP
+
+    S -> NP VP
        | VP
- 
+
     NP -> Pronoun
         | Proper_noun
-        | Determinant Adj Nominal
+        | Determiner Adj Nominal
         | Nominal
         | Adj
- 
+
     Nominal -> Noun Nominal2
- 
+
     Nominal2 -> PP Nominal2
               | Noun Nominal2
               | ε
- 
+
     VP -> Aux Verb Adv VP2
         | Verb VP2
         | Verb NP VP2
         | Verb NP PP VP2
         | Verb PP VP2
- 
+        | Verb VP2
+
     VP2 -> PP VP2
          | ε
-     
+
     PP -> Preposition NP
 
     Adj -> Adjective
@@ -76,7 +75,6 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 Infelizmente, a **gramática utlizada** tem algumas limitações, entre elas:
  
 - Precisa que a frase seja escrita por completo para só então comece a análise, pois estamos usando uma API para classificar as palavras (parte léxica), e esta é um pouco  lenta (uma requisição por palavra). Então a melhor maneira é apenas começar  análise depois que o texto for escrito.
-- Verbos no passado não são captados
 - Verbos no futuro não estão sendo capturados
 - Adjetivo só funciona entre determinantes e nominais
     - ex: the pretty girl
@@ -85,8 +83,7 @@ Infelizmente, a **gramática utlizada** tem algumas limitações, entre elas:
  
 - Rever uma parte da grmática
 - A frase `'I like dogs'` não funciona, mas `'I like the dogs'` sim. Isso se deve ao fato de a gramática não aceitar substantivosantecedidos por verbos (precisa de um  determinante entre eles, nesse caso o 'the')
- 
-- Verbos no passado
+
  
 <!-- - Teste automatico para as frases
     - it is raining
