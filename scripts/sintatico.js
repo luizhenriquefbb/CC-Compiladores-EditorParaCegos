@@ -7,6 +7,8 @@ export class Sintatico {
         console.log("Iniciando Sintatico");
 
         this.list_tokens = list_tokens;  //lista de tokens
+        console.log(this.list_tokens);
+        
         this.index = 0;      //índice do token atual
         this.current = this.list_tokens[0];    //token atual
 
@@ -17,7 +19,8 @@ export class Sintatico {
 
         // Guarda o ultimo erro gerado para exibir ao usuário
         this.lastError = { mensagem: '', local: { word: '', wordPosition: 0 } };
-        this.personNumber = new MyStack();
+        this.personNumberStack = new MyStack();
+        this.tenseStack = new MyStack();
 
 
     }
@@ -62,16 +65,7 @@ export class Sintatico {
     comecarAnalise() {
         console.log("Iniciando analise");
 
-        // checando se tem palavra duplicada
-        for (let i = 0; i < this.list_tokens.length - 1; i++) {
-            if (this.list_tokens[i].word == this.list_tokens[i + 1].word) {
-                this.utils.printAndSpeak('Invalid Sentence');
-                this.lastError.mensagem = `Word ${this.list_tokens[i].word} duplicated`
-                this.utils.printAndSpeak(this.lastError.mensagem);
-                return { status: false, mensagem: this.lastError };
-            }
-
-        }
+        this.checaPalavraDuplicada();
 
         if (!this.sentence()) {
             this.utils.printAndSpeak('Invalid Sentence');
@@ -109,7 +103,7 @@ export class Sintatico {
         }
 
         if (this.nounPhrase())
-            this.personNumber.push(this.list_tokens[this.index - 1]);
+            this.personNumberStack.push(this.list_tokens[this.index - 1]);
 
 
         if (!this.verbPhrase()) {
@@ -135,8 +129,8 @@ export class Sintatico {
 
         if (!this.isAuxiliar() && this.isVerb()) {
 
-            this.personNumber.push(this.list_tokens[this.index - 1])
-            var message = this.personNumber.reduz_pessoa();
+            this.personNumberStack.push(this.list_tokens[this.index - 1])
+            var message = this.personNumberStack.reduz_pessoa();
             if (message != 'ok') {
                 this.lastError.mensagem = message;
                 return false;
@@ -166,15 +160,26 @@ export class Sintatico {
 
 
         else if (this.isAuxiliar()) {
+            
             this.next();
-            this.personNumber.push(this.list_tokens[this.index - 1])
-            var message = this.personNumber.reduz_pessoa();
+            this.personNumberStack.push(this.list_tokens[this.index - 1])
+            var message = this.personNumberStack.reduz_pessoa();
             if (message != 'ok') {
                 this.lastError.mensagem = message;
                 return false;
             }
+
+            this.tenseStack.push(this.list_tokens[this.index - 1])
+            
+
             if (!this.isVerb())
                 return false;
+            this.tenseStack.push(this.list_tokens[this.index - 1])
+            var message = this.tenseStack.reduz_tempo_verbal();
+            if (message != 'ok') {
+                this.lastError.mensagem = message;
+                return false;
+            }
             this.isAdverb();
             if (!this.verbPhrase_2())
                 return false;
@@ -220,6 +225,9 @@ export class Sintatico {
                 return true;
         }
         else if (this.nominal()) {
+            return true;
+        }
+        else if (this.isAdjective()) {
             return true;
         }
         return false;
@@ -460,6 +468,19 @@ export class Sintatico {
         this.lastError.mensagem = `expected an 'auxiliar' before '${this.current.word}' ( word number ${this.index + 1} )`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return retorno;
+    }
+
+    checaPalavraDuplicada(){
+        // checando se tem palavra duplicada
+        for (let i = 0; i < this.list_tokens.length - 1; i++) {
+            if (this.list_tokens[i].word == this.list_tokens[i + 1].word) {
+                this.utils.printAndSpeak('Invalid Sentence');
+                this.lastError.mensagem = `Word ${this.list_tokens[i].word} duplicated`
+                this.utils.printAndSpeak(this.lastError.mensagem);
+                return { status: false, mensagem: this.lastError };
+            }
+
+        }
     }
 
 }
