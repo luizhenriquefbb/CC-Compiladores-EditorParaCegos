@@ -210,10 +210,16 @@ export class MyStack {
                 }
             }
             //outros NP's (nome proprio ou substantivo)
-            else if (x["isPlural"] == false && this.Dicionario.VERB == subTopo.usedClassification || this.Dicionario.NOUN == subTopo.usedClassification) {
+            else if (x["isPlural"] == false && this.Dicionario.VERB == subTopo.usedClassification) {
                 subTopoPessoaNumero.push({ person: "all", number: "singular" });
-            } else if (x["isPlural"] == true && this.Dicionario.VERB == subTopo.usedClassification || this.Dicionario.NOUN == subTopo.usedClassification) {
+            }
+            else if (x["isPlural"] == false && this.Dicionario.NOUN == subTopo.usedClassification) {
+                subTopoPessoaNumero.push({ person: "third", number: "singular" });
+
+            } else if (x["isPlural"] == true && this.Dicionario.VERB == subTopo.usedClassification) {
                 subTopoPessoaNumero.push({ person: "all", number: "plural" });
+            } else if (x["isPlural"] == true && this.Dicionario.NOUN == subTopo.usedClassification) {
+                subTopoPessoaNumero.push({ person: "third", number: "plural" });
             }
             else if(x["classification"] == this.Dicionario.VERB && this.Dicionario.VERB == subTopo.usedClassification)
                 subTopoPessoaNumero.push({ person: "all", number: "all" });

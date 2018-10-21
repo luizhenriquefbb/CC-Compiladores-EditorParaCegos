@@ -17,6 +17,7 @@ export class Dicionario {
         this.ADJECTIVE = 'adjective';
         this.ADVERB = 'adverb';
         this.PROPER_NOUN = 'proper noun'
+        this.CONJUNCTION = 'conjunction'
         
     }
 
@@ -550,8 +551,7 @@ export class Dicionario {
                                 "tense": "past"
                             }
 
-                        ],
-                        "verb":[]
+                        ]
                     }
                 };
             case 'has':
@@ -566,8 +566,7 @@ export class Dicionario {
                                 "tense": "past"
                             }
 
-                        ],
-                        "verb":[]
+                        ]
                     }
                 };
 
