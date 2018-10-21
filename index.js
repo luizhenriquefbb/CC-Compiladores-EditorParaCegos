@@ -78,9 +78,8 @@ function runLexico() {
 }
 
 
-
-
 document.getElementById("buttonReproduce").onclick = runLexico;
+
 
 /**
  * Seleciona uma substring do texto de um div
@@ -145,4 +144,85 @@ function encontrarIncioDoToken(token, frases, numeroFrase){
     posicaoInicial += frases[numeroFrase].indexOf(token);
 
     return posicaoInicial;
+}
+
+
+
+
+// para testes
+// ██████╗  █████╗ ██████╗  █████╗     ████████╗███████╗███████╗████████╗███████╗███████╗
+// ██╔══██╗██╔══██╗██╔══██╗██╔══██╗    ╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝██╔════╝██╔════╝
+// ██████╔╝███████║██████╔╝███████║       ██║   █████╗  ███████╗   ██║   █████╗  ███████╗
+// ██╔═══╝ ██╔══██║██╔══██╗██╔══██║       ██║   ██╔══╝  ╚════██║   ██║   ██╔══╝  ╚════██║
+// ██║     ██║  ██║██║  ██║██║  ██║       ██║   ███████╗███████║   ██║   ███████╗███████║
+// ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝       ╚═╝   ╚══════╝╚══════╝   ╚═╝   ╚══════╝╚══════╝
+//                                                                                       
+
+var putOnLogView = function(str){
+    var logs = document.getElementById("resultadoDosTestes");
+
+    console.log(str);
+    logs.innerText += str;
+    logs.innerHTML += '<br>';
+}
+
+// botao de teste. Ele deve ser comekntado quando em produção
+document.getElementById("buttonTest").onclick = test;
+/**
+ * Método para testar frases. Comentar o botao quando em produção
+ */
+function test() {
+    
+    console.log("iniciando teste");
+    var lexico = new Lexico();
+
+
+
+    var frases = [
+        "the book is on table",
+        "my name is Luiz",
+        "the book is on the table",
+        "my cat put an egg",
+        "I am tall",
+        "the dog are sleeping",
+        "the dog is sleeping",
+        "the dogs are sleeping",
+        "the dogs is sleeping",
+        "dhsfofhs"
+    ];
+
+    // separar em frases e analisar indivudalmente
+    // for (const frase of frases) {
+    for (var cont = 0; cont < frases.length; cont++) {
+        var frase = frases[cont];
+
+
+        // não precisa analisar tokens vazios
+        if (frase == '') {
+            continue;
+        }
+
+        // recolocar o '.' no final da frase para a gramática aceitar
+
+        var lexicoAnalise = lexico.analyze(frase + '.');
+
+        var lexicoTokens = lexicoAnalise.status == true ? lexicoAnalise.result : [];
+
+        var sintatico = new Sintatico(lexicoTokens);
+
+        var sintaticoAnalise = sintatico.comecarAnalise()
+
+
+
+        // print sucesso ou falha
+        if (!lexicoAnalise.status || !sintaticoAnalise.status) {
+           putOnLogView("frase errada: " + frase);
+
+        } else {
+           putOnLogView("sucesso na frase: " + frase);
+
+        }
+
+        console.log(lexicoTokens);
+    }
 }
