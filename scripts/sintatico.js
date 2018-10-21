@@ -64,8 +64,14 @@ export class Sintatico {
     //                                                              
     comecarAnalise() {
         console.log("Iniciando analise");
-
-        this.checaPalavraDuplicada();
+        //retorna a palavra se duplicada 
+        let duplicatedWord = this.checaPalavraDuplicada();
+        if(duplicatedWord != ''){
+            this.utils.printAndSpeak('Invalid Sentence');
+            this.lastError.mensagem = `Word \'${duplicatedWord}\' is duplicated.`
+            this.utils.printAndSpeak(this.lastError.mensagem);
+            return { status: false, mensagem: this.lastError };
+        }
 
         if (!this.sentence()) {
             this.utils.printAndSpeak('Invalid Sentence');
