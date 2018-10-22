@@ -172,7 +172,7 @@ export class Lexico {
                 }
                 //nome proprio
                 if(token[0] != '.' && token != 'I' && token[0] === token[0].toUpperCase() ){
-                    lex = [{ "classificacao": this.dicionario.PROPER_NOUN, "personNumber": [{person:'third', number:'singular'}] }];
+                    lex = [{ "classificacao": this.dicionario.PROPER_NOUN,'isPlural':false, "personNumber": [{person:'third', number:'singular'}] }];
                      
                 }
                 else
