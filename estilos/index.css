@@ -17,12 +17,12 @@
     margin-bottom: 5px;
     font-size: 16px;
 }
-#words{
-    position: fixed; 
-    width: 100%;
-    bottom: 5px;
-    border-top: 2px grey;
-    border-top-style: solid;
+#words {
+	/* position: fixed; */
+	/* width: 100%; */
+	/* bottom: 5px; */
+	/* border-top: 2px grey; */
+	/* border-top-style: solid; */
 }
 #lexChosenName{
     display: inline-block;

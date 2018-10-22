@@ -223,7 +223,7 @@ var putOnLogView = function(str){
 }
 
 // botao de teste. Ele deve ser comekntado quando em produção
-document.getElementById("buttonTest").onclick = test;
+// document.getElementById("buttonTest").onclick = test;
 /**
  * Método para testar frases. Comentar o botao quando em produção
  */

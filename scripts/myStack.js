@@ -213,7 +213,7 @@ export class MyStack {
             else if (x["isPlural"] == false && this.Dicionario.VERB == subTopo.usedClassification) {
                 subTopoPessoaNumero.push({ person: "all", number: "singular" });
             }
-            else if (x["isPlural"] == false && this.Dicionario.NOUN == subTopo.usedClassification) {
+            else if (x["isPlural"] == false && (this.Dicionario.NOUN == subTopo.usedClassification || this.Dicionario.PROPER_NOUN == subTopo.usedClassification)) {
                 subTopoPessoaNumero.push({ person: "third", number: "singular" });
 
             } else if (x["isPlural"] == true && this.Dicionario.VERB == subTopo.usedClassification) {
