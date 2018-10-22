@@ -1,6 +1,8 @@
 class Utils{
     constructor(){
         console.log("Criando classe Utils");
+        this.lastError = '';
+        this.repeat = 'Press \'f1\' to repeat'
         
     }
 

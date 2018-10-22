@@ -1,30 +1,30 @@
 # Blind editor
- 
+
 Atividade ralizada para a cadeira de COMPILADORES - UFPB
- 
+
 Desenvolver um editor de texto onde os usuários são cegos.
- 
+
 A aplicação deve dar feedbacks para o usuário errors lexicos, sintáticos e semânticos.
- 
+
 # Como Rodar
- 
+
 Apenas abra o [index.html](index.html) no seu browser. E escreva a frase ou texto. Ao finalizar clique em 'tab' depois 'enter' paraque a análise comece.
- 
+
 Ao final da análise se houver alguma palavra errada, a parte errada vai estar selecionada para que o usuário faça a correção.
- 
- 
+
+
 # Grupo
- 
+
 Aluno | Matrícula
 -----| ----
 Luiz Henrique | 11514334
 Aline Moura | 
 Alisson Galiza | 11408126
 Rhenan Carvalho |
- 
- 
+
+
 # Sobre o projeto:
- 
+
 Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
 ## Gramática
@@ -35,18 +35,15 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
     NP -> Pronoun
         | Proper_noun
         | Determiner Adj Nominal
-        | Nominal
-        | Adj
+        | Adj Nominal
 
     Nominal -> Noun Nominal2
 
     Nominal2 -> PP Nominal2
-              | Noun Nominal2
               | ε
 
     VP -> Aux Verb Adv VP2
-        | Verb VP2
-        | Verb NP VP2
+        | Verb NP Conj VP2
         | Verb NP PP VP2
         | Verb PP VP2
         | Verb VP2
@@ -61,6 +58,9 @@ Para facilitar o desenvolvimento, optamos por utilizar uma entrada em ingles
 
     Adv -> Adverb
          | ε
+
+    Conj -> Conjunction NP
+          | ε
 
 
 

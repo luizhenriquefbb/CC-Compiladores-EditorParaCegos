@@ -35,8 +35,9 @@ export class Lexico {
         var classifications = [];
         var result = this.dicionario.queryWord(str);
         if(result == null){
-            console.log("Word not found");
-            this.utils.printAndSpeak(`The word ${str} was not found`);
+            console.log(`The word ${str} was not found.`);
+            this.utils.printAndSpeak(`The word ${str} was not found.` + utils.repeat);
+            this.utils.lastError= `The word ${str} was not found.` + utils.repeat;
             // throw(`The word ${str} was not found`);
             return false;
         }

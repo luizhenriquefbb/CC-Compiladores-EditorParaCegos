@@ -67,19 +67,21 @@ export class Sintatico {
         //retorna a palavra se duplicada 
         let duplicatedWord = this.checaPalavraDuplicada();
         if(duplicatedWord != ''){
-            this.utils.printAndSpeak('Invalid Sentence');
-            this.lastError.mensagem = `Word \'${duplicatedWord}\' is duplicated.`
-            this.utils.printAndSpeak(this.lastError.mensagem);
-            return { status: false, mensagem: this.lastError };
+            // this.utils.printAndSpeak('Invalid Sentence');
+            this.lastError.mensagem = `The word \'${duplicatedWord}\' is duplicated.`;
+            this.utils.printAndSpeak(this.lastError.mensagem + utils.repeat);
+            utils.lastError = this.lastError.mensagem;
+            return { status: false, mensagem: this.lastError, tokens: this.list_tokens, badWord:duplicatedWord};
         }
 
         if (!this.sentence()) {
-            this.utils.printAndSpeak('Invalid Sentence');
-            this.utils.printAndSpeak(this.lastError.mensagem);
-            return { status: false, mensagem: this.lastError };
+            // this.utils.printAndSpeak('Invalid Sentence');
+            this.utils.printAndSpeak(this.lastError.mensagem + utils.repeat);
+            utils.lastError = this.lastError.mensagem;
+            return { status: false, mensagem: this.lastError, tokens: this.list_tokens};
         } else {
             this.utils.printAndSpeak("Sentence ok");
-            return { status: true };
+            return { status: true, tokens: this.list_tokens};
         }
 
 
@@ -107,7 +109,6 @@ export class Sintatico {
         if (!this.current) {
             return false;
         }
-
         if (this.nounPhrase())
             this.personNumberStack.push(this.list_tokens[this.index - 1]);
 
@@ -142,7 +143,14 @@ export class Sintatico {
                 return false;
             }
             if (this.nounPhrase()) {
-                this.preposition();
+                if(this.isConjunction()){
+                    if(!this.nounPhrase())
+                        return false;
+                }
+                else {
+                    this.preposition();
+                }
+
                 if (!this.verbPhrase_2())
                     return false;
 
@@ -230,11 +238,10 @@ export class Sintatico {
             if (this.nominal())
                 return true;
         }
-        else if (this.nominal()) {
-            return true;
-        }
-        else if (this.isAdjective()) {
-            return true;
+        else if (this.isAdjective()) {  //epsilon
+            if (this.nominal()) 
+                return true;
+            return false;
         }
         return false;
     }
@@ -259,12 +266,12 @@ export class Sintatico {
      */
     nominal_2() {
 
-        if (this.isNoun()) {
-            if (this.nominal_2())
-                return true;
-            return false;
-        }
-        else if (this.preposition()) {
+        // if (this.isNoun()) {
+        //     if (this.nominal_2())
+        //         return true;
+        //     return false;
+        // }
+         if (this.preposition()) {
             if (this.nominal_2())
                 return true;
             return false;
@@ -314,7 +321,7 @@ export class Sintatico {
         }
 
 
-        this.lastError.mensagem = `expected a 'noun' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'noun' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -333,7 +340,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a 'verb' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'verb' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -352,7 +359,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a 'adverb' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'adverb' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -371,7 +378,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a 'determiner' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'determiner' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -391,7 +398,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a 'preposition' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'preposition' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -405,7 +412,7 @@ export class Sintatico {
             this.next();
             return true;
         }
-        this.lastError.mensagem = `expected a 'proper-noun' before after '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'proper-noun' before after '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false
     }
@@ -424,7 +431,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected a 'pronoum' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected a 'pronoum' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -443,7 +450,26 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected an 'adjective' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected an 'adjective' before '${this.current.word}' ( word number ${this.index + 1} ).`;
+        this.lastError.local = { word: this.current.word, wordPosition: this.index };
+        return false;
+    }
+
+    isConjunction() {
+
+        var retorno = false;
+        this.current.lex.map((x) => {
+            if (x.classificacao == this.dicionario.CONJUNCTION)
+                retorno = true;
+        }
+        );
+        if (retorno) {
+            this.current['usedClassification'] = this.dicionario.CONJUNCTION;
+            this.next();
+            return true;
+        }
+
+        this.lastError.mensagem = `expected a 'conjunction' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return false;
     }
@@ -459,8 +485,12 @@ export class Sintatico {
             if (x.classificacaoDetalhada == this.dicionario.AUXILIAR) {
                 // verifica se o proximo é verbo
                 this.list_tokens[this.index + 1].lex.map(y => {
-                    if (y.classificacao == this.dicionario.VERB)
-                        retorno = true;
+                    if (y.classificacao == this.dicionario.VERB){
+                        if((x.word == 'has' || x.word == 'have') && !y.tempoVerbal == this.dicionario.PAST)
+                            retorno = false;    
+                        else
+                            retorno = true;
+                    }
                 });
             }
         });
@@ -471,7 +501,7 @@ export class Sintatico {
             return true;
         }
 
-        this.lastError.mensagem = `expected an 'auxiliar' before '${this.current.word}' ( word number ${this.index + 1} )`;
+        this.lastError.mensagem = `expected an 'auxiliar' before '${this.current.word}' ( word number ${this.index + 1} ).`;
         this.lastError.local = { word: this.current.word, wordPosition: this.index };
         return retorno;
     }
@@ -479,14 +509,14 @@ export class Sintatico {
     checaPalavraDuplicada(){
         // checando se tem palavra duplicada
         for (let i = 0; i < this.list_tokens.length - 1; i++) {
-            if (this.list_tokens[i].word == this.list_tokens[i + 1].word) {
-                this.utils.printAndSpeak('Invalid Sentence');
-                this.lastError.mensagem = `Word ${this.list_tokens[i].word} duplicated`
-                this.utils.printAndSpeak(this.lastError.mensagem);
-                return { status: false, mensagem: this.lastError };
+            var first = this.list_tokens[i];
+            var next = this.list_tokens[i+1];
+            if (first.word == next.word) {
+                return first.word;
             }
 
         }
+        return '';
     }
 
 }

@@ -5,7 +5,7 @@ import { utils } from "./scripts/utils.js";
 console.log("index.js");
 
 // welcome sppech
-utils.printAndSpeak2("welcome. If you want me to repeat anything, just press 'esc' or continue by pressing 'enter'");
+// utils.printAndSpeak2("welcome. If you want me to repeat anything, just press 'esc' or continue by pressing 'enter'");
 
 
 
@@ -17,9 +17,6 @@ function runLexico() {
     var myInputArea = document.getElementById('inputArea');
     var txtCompleto = String(myInputArea.value);
     var frases = txtCompleto.split(/[.!?]/);
-
-    
-    
 
 
     // separar em frases e analisar indivudalmente
@@ -35,13 +32,18 @@ function runLexico() {
 
         // recolocar o '.' no final da frase para a gramática aceitar
 
-        var lexicoAnalise = lexico.analyze(frase + '.');
+        var lexicoAnalise = lexico.analyze(frase+ '.');
 
         var lexicoTokens = lexicoAnalise.status == true ? lexicoAnalise.result : [];
 
-        var sintatico = new Sintatico(lexicoTokens);
+        if(lexicoTokens.length > 0){
+            var sintatico = new Sintatico(lexicoTokens);
 
-        var sintaticoAnalise = sintatico.comecarAnalise()
+            var sintaticoAnalise = sintatico.comecarAnalise()
+
+
+            fillWords(sintaticoAnalise.tokens);
+        }   
 
 
 
@@ -56,6 +58,7 @@ function runLexico() {
 
                 // selecionar a frase toda
                 setSelectionRange(myInputArea, inicioFrase, inicioFrase + frase.length);
+
 
             // lexica deu errado
             } else {
@@ -77,6 +80,14 @@ function runLexico() {
    
 }
 
+document.addEventListener('keyup', function(event) {
+    if(event.keyCode == 112) {
+            utils.printAndSpeak(utils.lastError);
+    }
+    else if(event.keyCode == 190) {
+            runLexico();
+    }
+});
 
 document.getElementById("buttonReproduce").onclick = runLexico;
 
@@ -99,6 +110,51 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
         range.moveStart('character', selectionStart);
         range.select();
     }
+}
+
+function fillWords(tokens_list){
+    var wordsDiv = document.getElementById('words');
+    while (wordsDiv.firstChild) {
+        wordsDiv.removeChild(wordsDiv.firstChild);
+    }
+    var pClassificacao = document.createElement('p');
+    pClassificacao.id = 'pClass';
+    pClassificacao.innerHTML = 'Word classification';
+    wordsDiv.appendChild(pClassificacao);
+    var ulWords = document.createElement('ul');
+    ulWords.id = 'wordsUl';
+
+    tokens_list.map(t =>{
+        var nameLi = document.createElement('li');
+        var wordLi = document.createElement('div')
+        wordLi.innerHTML=t.word;
+        wordLi.id = 'wordLi';
+        nameLi.appendChild(wordLi);
+        t.lex.map(l => {
+            if(!t.hasOwnProperty('usedClassification')){
+                var uncheckedLex = document.createElement('div');
+                uncheckedLex.innerHTML = l.classificacao;
+                uncheckedLex.id = 'uncheckedLex';
+                nameLi.appendChild(uncheckedLex);
+            }
+            else if(l.classificacaoDetalhada == t.usedClassification || l.classificacao == t.usedClassification){
+                var lexChosenName = document.createElement('div');
+                lexChosenName.innerHTML = l.classificacao;
+                lexChosenName.id = 'lexChosenName';
+                nameLi.appendChild(lexChosenName);
+
+            }
+            else{
+                var lexName = document.createElement('div');
+                lexName.innerHTML = l.classificacao;
+                lexName.id = 'lexName';
+                nameLi.appendChild(lexName);
+
+            }
+        });
+        ulWords.appendChild(nameLi);
+        wordsDiv.appendChild(ulWords);
+    });
 }
 
 /**
